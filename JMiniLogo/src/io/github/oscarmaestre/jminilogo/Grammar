@@ -1,0 +1,37 @@
+package io.github.oscarmaestre.jminilogo;
+import java_cup.runtime.*;
+
+%%
+
+%class Lexer
+%unicode
+%cup
+%line
+%column
+
+%{
+      StringBuffer string = new StringBuffer();
+
+      private Symbol symbol(int type) {
+        return new Symbol(type, yyline, yycolumn);
+      }
+      private Symbol symbol(int type, Object value) {
+        return new Symbol(type, yyline, yycolumn, value);
+      }
+%}
+
+
+
+SubeLapiz       = "subelapiz"
+BajaLapiz       = "bajalapiz"  
+Entero          =   0 | [1-9][0-9]*
+FinLinea        = \r|\n|\r\n
+EspacioEnBlanco = {LineTerminator} | [ \t\f]
+
+%%
+
+<YYINITIAL> {SubeLapiz} { return symbol (sym.SUBELAPIZ); }
+
+/* error fallback */
+[^]                              { throw new Error("Simbolo no esperado <"+
+                                                        yytext()+">"); }
