@@ -1,12 +1,14 @@
 package io.github.oscarmaestre.jminilogo;
-import java_cup.runtime.*;
+import java_cup.runtime.Symbol;
 
 %%
 
 %class Lexer
 %unicode
 %cup
+%implements sym
 %line
+%public
 %column
 
 %{
@@ -18,6 +20,9 @@ import java_cup.runtime.*;
       private Symbol symbol(int type, Object value) {
         return new Symbol(type, yyline, yycolumn, value);
       }
+      public void init(){
+        System.out.println("Por fin");
+      }
 %}
 
 
@@ -25,12 +30,17 @@ import java_cup.runtime.*;
 SubeLapiz       = "subelapiz"
 BajaLapiz       = "bajalapiz"  
 Entero          =   0 | [1-9][0-9]*
-FinLinea        = \r|\n|\r\n
-EspacioEnBlanco = {LineTerminator} | [ \t\f]
-
+EspacioEnBlanco = " "+
+Gira            = "gira" EspacioEnBlanco Entero
+Avanza          = "avanza" EspacioEnBlanco Entero
+PuntoComa       = ";"
 %%
 
 <YYINITIAL> {SubeLapiz} { return symbol (sym.SUBELAPIZ); }
+<YYINITIAL> {BajaLapiz} { return symbol (sym.BAJALAPIZ); }
+<YYINITIAL> {Gira}      { return symbol (sym.GIRA); }
+<YYINITIAL> {Avanza}    { return symbol (sym.AVANZA); }
+<YYINITIAL> {PuntoComa} { return symbol (sym.PUNTOCOMA); }
 
 /* error fallback */
 [^]                              { throw new Error("Simbolo no esperado <"+
