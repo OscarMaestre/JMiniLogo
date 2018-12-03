@@ -9,6 +9,7 @@ import io.github.oscarmaestre.jminilogo.Lexer;
 import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -21,7 +22,9 @@ import static org.junit.Assert.*;
  * @author usuario
  */
 public class PruebaScanner {
-    
+    Parser p;
+    Lexer l;
+    StringReader sr;
     public PruebaScanner() {
     }
     
@@ -35,6 +38,7 @@ public class PruebaScanner {
     
     @Before
     public void setUp() {
+        
     }
     
     @After
@@ -42,11 +46,8 @@ public class PruebaScanner {
     }
 
     @Test
-    public void hello() {
-        Parser p;
-        Lexer l;
-        StringReader sr;
-        sr=new StringReader("subelapiz");
+    public void subir() {
+        sr=new StringReader("subelapiz;");
         l=new Lexer(sr);
         p=new Parser(l);
         try {
@@ -55,4 +56,73 @@ public class PruebaScanner {
             Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    @Test
+    public void bajalapiz() {
+        sr=new StringReader("bajalapiz;");
+        l=new Lexer(sr);
+        p=new Parser(l);
+        try {
+            p.parse();
+        } catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Test
+    public void avanza() {
+        String programa="avanza 20;";
+        sr=new StringReader(programa);
+        l=new Lexer(sr);
+        p=new Parser(l);
+        try {
+            p.parse();
+        } catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Fallo en avanza:\n"+programa);
+        }
+    }
+    
+    @Test
+    public void gira() {
+        String programa="gira     20";
+        sr=new StringReader(programa);
+        l=new Lexer(sr);
+        p=new Parser(l);
+        try {
+            p.parse();
+        } catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Fallo en giro:\n"+programa);
+        }
+    }
+    
+    @Test
+    public void avanzagira() {
+        String programa="avanza  20 ;gira     20";
+        sr=new StringReader(programa);
+        l=new Lexer(sr);
+        p=new Parser(l);
+        try {
+            p.parse();
+        } catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Error en secuencia de sentencias:\n"+programa);
+        }
+    }
+    
+    @Test
+    public void repetir() {
+        String programa="repetir 5{avanza 20;}";
+        sr=new StringReader(programa);
+        l=new Lexer(sr);
+        p=new Parser(l);
+        try {
+            p.parse();
+        } catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Error en sentencia repetir:\n"+programa);
+        }
+    }
+    
 }

@@ -8,14 +8,18 @@ package io.github.oscarmaestre.jminilogo;
 /** CUP generated interface containing symbol constants. */
 public interface sym {
   /* terminals */
-  public static final int GIRA = 5;
-  public static final int AVANZA = 4;
-  public static final int error = 1;
   public static final int SUBELAPIZ = 2;
+  public static final int AVANZA = 4;
+  public static final int ENTERO = 11;
   public static final int BAJALAPIZ = 3;
-  public static final int PUNTOCOMA = 6;
   public static final int EOF = 0;
-  public static final int ENTERO = 7;
+  public static final int LLAVECERRADA = 10;
+  public static final int ESPACIO = 7;
+  public static final int error = 1;
+  public static final int PUNTOCOMA = 6;
+  public static final int LLAVEABIERTA = 9;
+  public static final int REPETIR = 8;
+  public static final int GIRA = 5;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -24,6 +28,10 @@ public interface sym {
   "AVANZA",
   "GIRA",
   "PUNTOCOMA",
+  "ESPACIO",
+  "REPETIR",
+  "LLAVEABIERTA",
+  "LLAVECERRADA",
   "ENTERO"
   };
 }
