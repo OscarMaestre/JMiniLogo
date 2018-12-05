@@ -46,7 +46,7 @@ PuntoComa       = ";"
 <YYINITIAL> {LlaveAbierta}          { return symbol (sym.LLAVEABIERTA); }
 <YYINITIAL> {LlaveCerrada}          { return symbol (sym.LLAVECERRADA); }
 <YYINITIAL> {PuntoComa}             { return symbol (sym.PUNTOCOMA); }
-<YYINITIAL> {Entero}                { return symbol (sym.ENTERO); }
+<YYINITIAL> {Entero}                { System.out.println("JFLEX;"+yytext());return symbol (sym.ENTERO, new String(yytext())); }
 <YYINITIAL> {EspacioEnBlanco}       { return symbol (sym.ESPACIO); }
 /* error fallback */
 [^]                              { throw new Error("Simbolo no esperado <"+

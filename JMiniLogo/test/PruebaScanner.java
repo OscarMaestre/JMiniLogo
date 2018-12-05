@@ -6,10 +6,10 @@
 
 import io.github.oscarmaestre.jminilogo.Parser;
 import io.github.oscarmaestre.jminilogo.Lexer;
+import io.github.oscarmaestre.jminilogo.programa.SentenciaCompuesta;
 import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -85,7 +85,7 @@ public class PruebaScanner {
     
     @Test
     public void gira() {
-        String programa="gira     20";
+        String programa="gira     20;";
         sr=new StringReader(programa);
         l=new Lexer(sr);
         p=new Parser(l);
@@ -99,7 +99,7 @@ public class PruebaScanner {
     
     @Test
     public void avanzagira() {
-        String programa="avanza  20 ;gira     20";
+        String programa="avanza 20;gira 20;";
         sr=new StringReader(programa);
         l=new Lexer(sr);
         p=new Parser(l);
@@ -113,7 +113,7 @@ public class PruebaScanner {
     
     @Test
     public void repetir() {
-        String programa="repetir 5{avanza 20;}";
+        String programa="repetir 5{avanza 20;};";
         sr=new StringReader(programa);
         l=new Lexer(sr);
         p=new Parser(l);
@@ -122,6 +122,19 @@ public class PruebaScanner {
         } catch (Exception ex) {
             Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
             fail("Error en sentencia repetir:\n"+programa);
+        }
+    }
+    
+    @Test 
+    public void programaSimple(){
+        sr=new StringReader("subelapiz;");
+        l=new Lexer(sr);
+        p=new Parser(l);
+        try {
+            p.parse();
+            SentenciaCompuesta s=p.getPrograma();
+        } catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

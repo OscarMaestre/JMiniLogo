@@ -1,10 +1,33 @@
 package io.github.oscarmaestre.jminilogo;
 import java_cup.runtime.*;
-
+import io.github.oscarmaestre.jminilogo.programa.*;
 parser code {:
     Lexer s;
+    SentenciaCompuesta programa;
     public Parser(Lexer scanner){
         this.s=scanner;
+        programa=new SentenciaCompuesta();
+    }
+    public void anadirSentenciaSubeLapiz(){
+        Sentencia sentencia=new SentenciaSubeLapiz();
+        programa.anadirSentencia ( sentencia );
+    }
+    public void anadirSentenciaBajaLapiz(){
+        Sentencia sentencia=new SentenciaBajaLapiz();
+        programa.anadirSentencia ( sentencia );
+    }
+    public void anadirSentenciaAvanza(String puntos){
+        System.out.println("Anadiendo avance:"+puntos.toString());
+        Sentencia sentencia=new SentenciaAvanza(new Integer(puntos));
+        programa.anadirSentencia ( sentencia );
+    }
+    public void anadirSentenciaGira(String puntos){
+        System.out.println("Anadiendo giro:"+puntos.toString());
+        Sentencia sentencia=new SentenciaGira(new Integer(puntos));
+        programa.anadirSentencia ( sentencia );
+    }
+    public SentenciaCompuesta getPrograma(){
+        return programa;
     }
 :}
 
@@ -12,34 +35,41 @@ parser code {:
 init with {: s.init(); :};
 scan with {: return s.next_token(); :};
 
-/* Terminals (tokens returned by the scanner). */
-terminal            SUBELAPIZ, BAJALAPIZ, AVANZA, GIRA, PUNTOCOMA, ESPACIO, REPETIR, LLAVEABIERTA, LLAVECERRADA;
-terminal Integer    ENTERO; 
 
-/* Non terminals */
+terminal            SUBELAPIZ, BAJALAPIZ, AVANZA, GIRA, PUNTOCOMA, ESPACIO, REPETIR, LLAVEABIERTA, LLAVECERRADA;
+terminal            String ENTERO; 
+
+
 non terminal            lista_sentencias;
 non terminal            subir, bajar, avanzar, girar, repetir;
-non terminal Integer    sentencia;      // used to store evaluated subexpressions
-
-/* The grammar rules */
-lista_sentencias ::= sentencia | sentencia lista_sentencias ;
-
-subir ::=   SUBELAPIZ {: System.out.println("Subiendo");:} PUNTOCOMA |
-            SUBELAPIZ {: System.out.println("Subiendo");:} ESPACIO PUNTOCOMA ;
+non terminal            sentencia, final_sentencia;
 
 
-bajar ::=   BAJALAPIZ {: System.out.println("Bajando");:} PUNTOCOMA |
-            BAJALAPIZ {: System.out.println("Bajando");:} ESPACIO PUNTOCOMA ;
+lista_sentencias ::= sentencia final_sentencia | sentencia final_sentencia lista_sentencias ;
 
-
-avanzar::=  AVANZA ESPACIO ENTERO {: System.out.println("avanzando");:} |
-            AVANZA ESPACIO ENTERO {: System.out.println("avanzando");:} PUNTOCOMA |
-            AVANZA ESPACIO ENTERO {: System.out.println("avanzando");:} ESPACIO PUNTOCOMA;
-
-
-girar ::=   GIRA  ESPACIO ENTERO {: System.out.println("Girando Numero!");:} |
-            GIRA  ESPACIO ENTERO {: System.out.println("Girando Numero!");:} PUNTOCOMA |
-            GIRA  ESPACIO ENTERO {: System.out.println("Girando Numero!");:} ESPACIO PUNTOCOMA;
+final_sentencia  ::= PUNTOCOMA | ESPACIO PUNTOCOMA | ESPACIO PUNTOCOMA ESPACIO ;
 
 sentencia ::= subir | bajar | avanzar | girar | repetir ;
+
+subir ::=   SUBELAPIZ {: 
+                System.out.println("Subiendo");
+                this.parser.anadirSentenciaSubeLapiz();
+            :}  ;
+
+
+bajar ::=   BAJALAPIZ {: 
+                this.parser.anadirSentenciaBajaLapiz();
+            :}  ;
+
+
+avanzar::=  AVANZA ESPACIO ENTERO:entero {: 
+                this.parser.anadirSentenciaAvanza(entero);
+            :} ;
+
+
+girar ::=   GIRA  ESPACIO ENTERO:entero {: 
+                this.parser.anadirSentenciaGira(entero);
+            :} ;
+
+
 repetir::= REPETIR ESPACIO ENTERO LLAVEABIERTA lista_sentencias LLAVECERRADA;

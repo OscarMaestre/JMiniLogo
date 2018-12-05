@@ -644,7 +644,7 @@ public class Lexer implements java_cup.runtime.Scanner, sym {
             // fall through
           case 12: break;
           case 2: 
-            { return symbol (sym.ENTERO);
+            { System.out.println("JFLEX;"+yytext());return symbol (sym.ENTERO, new String(yytext()));
             } 
             // fall through
           case 13: break;
