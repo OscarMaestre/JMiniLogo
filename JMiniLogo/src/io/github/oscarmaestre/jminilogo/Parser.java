@@ -5,15 +5,15 @@
 
 package io.github.oscarmaestre.jminilogo;
 
-import java_cup.runtime.*;
 import io.github.oscarmaestre.jminilogo.programa.*;
-import java_cup.runtime.XMLElement;
+
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
   */
 @SuppressWarnings({"rawtypes"})
 public class Parser extends java_cup.runtime.lr_parser {
 
+ @Override
  public final Class getSymbolContainer() {
     return sym.class;
 }
