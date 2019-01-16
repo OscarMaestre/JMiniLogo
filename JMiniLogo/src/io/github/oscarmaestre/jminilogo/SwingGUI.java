@@ -114,27 +114,24 @@ public class SwingGUI extends GUI implements ActionListener{
     public void activarDepuracionGUI(){
         this.depurandoGUI=true;
     }
-    private void instalarControladoresEventos(){
+    public void instalarControladoresEventos(){
+        this.menuNuevo.addActionListener(this);
         this.menuAbrir.addActionListener(this);
-        this.menuAbrir.
-        this.menuAbrir.setActionCommand(this.MENU_ABRIR);
-        System.out.println("PPPP");
+        System.out.println(this.menuAbrir);
+        System.out.println("instaladors");
     }
     public JFrame getUI(){
-        if (ventana!=null){
-            return ventana;
-        }
+        
         double[] pesosColumnas={10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
         double[] pesosFilas={10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
-        ventana=new GUI();
         if (depurandoGUI){
             GridBagCellPanel panelBordes=new GridBagCellPanel();
             ventana.setContentPane(panelBordes);
         }
         
-        contenedor=ventana.getContentPane();
-        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setSize(500,400);
+        contenedor=this.getContentPane();
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(500,400);
         GridBagLayout layout=new GridBagLayout();
         layout.columnWeights=pesosColumnas;
         layout.rowWeights=pesosFilas;
@@ -147,13 +144,14 @@ public class SwingGUI extends GUI implements ActionListener{
         anadirTextAreaMensajes(contenedor);
         anadirBotones(contenedor);
         anadirPanelDibujo(contenedor);
-        
         instalarControladoresEventos();
-        return ventana;
+        return this;
     }    
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (e.getActionCommand()==this.MENU_ABRIR){
+            System.out.println("Abriendo");
+        }
     }
 }

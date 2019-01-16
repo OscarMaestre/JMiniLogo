@@ -16,6 +16,7 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
+        System.out.println("GUI:"+this.menuAbrir);
     }
 
     /**
@@ -56,11 +57,6 @@ public class GUI extends javax.swing.JFrame {
         menuArchivo.add(menuNuevo);
 
         menuAbrir.setText("Abrir");
-        menuAbrir.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menuAbrirMouseClicked(evt);
-            }
-        });
         menuArchivo.add(menuAbrir);
 
         menuGuardar.setText("Guardar");
@@ -116,10 +112,6 @@ public class GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menuAbrirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuAbrirMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menuAbrirMouseClicked
-
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -137,7 +129,7 @@ public class GUI extends javax.swing.JFrame {
     protected javax.swing.JMenuItem menuGuardar;
     protected javax.swing.JMenuItem menuGuardarComo;
     protected javax.swing.JMenuItem menuMostrarAyuda;
-    private javax.swing.JMenuItem menuNuevo;
+    protected javax.swing.JMenuItem menuNuevo;
     protected javax.swing.JMenuItem menuSalir;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,13 +13,24 @@ import javax.swing.JFrame;
  */
 public class Main {
     
+    public static void ejecutar(){
+        JFrame ventana=new SwingGUI().getUI();
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ventana.setTitle("JMiniLogo");
+        ventana.pack();
+        ventana.setVisible(true);
+        
+    }
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        JFrame ventana=new SwingGUI().getUI();
-        ventana.setTitle("JMiniLogo");
-        ventana.setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                ejecutar();
+            }
+        });
+        
     }
     
 }
