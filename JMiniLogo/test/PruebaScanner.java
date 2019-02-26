@@ -112,8 +112,23 @@ public class PruebaScanner {
     }
     
     @Test
+    public void avanzagiraIncluyendoFinDeLinea() {
+        System.out.println("Probando con fines de linea");
+        String programa="avanza 199;\n   ";
+        sr=new StringReader(programa);
+        l=new Lexer(sr);
+        p=new Parser(l);
+        try {
+            p.parse();
+        } catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
+            fail("Error en secuencia de sentencias:\n"+programa);
+        }
+    }
+    
+    @Test
     public void repetir() {
-        String programa="repetir 5{avanza 20;};";
+        String programa="repetir 5{avanza 20;\n gira 20;};";
         sr=new StringReader(programa);
         l=new Lexer(sr);
         p=new Parser(l);

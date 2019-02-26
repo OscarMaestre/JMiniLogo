@@ -10,8 +10,9 @@ import java_cup.runtime.Symbol;
 %line
 %public
 %column
-
+%state NO_IGNORAR_ESPACIOS  
 %{
+      boolean DEPURANDO = false;
       StringBuffer string = new StringBuffer();
 
       private Symbol symbol(int type) {
@@ -29,7 +30,10 @@ import java_cup.runtime.Symbol;
 SubeLapiz       = "subelapiz"
 BajaLapiz       = "bajalapiz"  
 Entero          =   0 | [1-9][0-9]*
-EspacioEnBlanco = [\n\t ]+
+
+FinLinea        = \r|\n|\r\n
+
+EspacioEnBlanco = ({FinLinea} | [ \t\f])+
 Gira            = "gira" 
 Avanza          = "avanza" 
 LlaveAbierta    = "{"
@@ -38,16 +42,60 @@ Repetir         = "repetir"
 PuntoComa       = ";"
 %%
 
-<YYINITIAL> {SubeLapiz}             { return symbol (sym.SUBELAPIZ); }
-<YYINITIAL> {BajaLapiz}             { return symbol (sym.BAJALAPIZ); }
-<YYINITIAL> {Gira}                  { return symbol (sym.GIRA); }
-<YYINITIAL> {Avanza}                { return symbol (sym.AVANZA); }
-<YYINITIAL> {Repetir}               { return symbol (sym.REPETIR); }
-<YYINITIAL> {LlaveAbierta}          { return symbol (sym.LLAVEABIERTA); }
-<YYINITIAL> {LlaveCerrada}          { return symbol (sym.LLAVECERRADA); }
-<YYINITIAL> {PuntoComa}             { return symbol (sym.PUNTOCOMA); }
-<YYINITIAL> {Entero}                { System.out.println("JFLEX;"+yytext());return symbol (sym.ENTERO, new String(yytext())); }
-<YYINITIAL> {EspacioEnBlanco}       { return symbol (sym.ESPACIO); }
+<YYINITIAL> {SubeLapiz}             { 
+                                        if (DEPURANDO){
+                                            System.out.println("Encontrando -subelapiz-");
+                                        }
+                                        return symbol (sym.SUBELAPIZ); 
+                                    }
+<YYINITIAL> {BajaLapiz}             { 
+                                        if (DEPURANDO){
+                                            System.out.println("Encontrando -bajalapiz-");
+                                        }
+                                        return symbol (sym.BAJALAPIZ); 
+                                    }
+<YYINITIAL> {Gira}                  { 
+                                        if (DEPURANDO){
+                                            System.out.println("Encontrando -gira-, aceptando espacios...");
+                                        }
+                                        yybegin(NO_IGNORAR_ESPACIOS); 
+                                        return symbol (sym.GIRA); 
+                                    }
+<YYINITIAL> {Avanza}                { 
+                                        if (DEPURANDO){
+                                            System.out.println("Encontrando -avanza-, aceptando espacios...");
+                                        }
+                                        yybegin(NO_IGNORAR_ESPACIOS); 
+                                        return symbol (sym.AVANZA); 
+                                    }
+{Repetir}               { 
+                                        if (DEPURANDO){
+                                            System.out.println("Encontrando -repetir-, aceptando espacios...");
+                                        }
+                                        yybegin(NO_IGNORAR_ESPACIOS); 
+                                        return symbol (sym.REPETIR); 
+                        }
+{LlaveAbierta}          { return symbol (sym.LLAVEABIERTA); }
+{LlaveCerrada}          { return symbol (sym.LLAVECERRADA); }
+
+{PuntoComa}             { yybegin(YYINITIAL);return symbol (sym.PUNTOCOMA); }
+{Entero}                { 
+                                        yybegin(YYINITIAL); 
+                                        if (DEPURANDO){
+                                            System.out.println("Encontrando -Entero-"+yytext());
+                                        }
+                                        return symbol (sym.ENTERO, new String(yytext())); 
+                                    }
+
+<NO_IGNORAR_ESPACIOS>{EspacioEnBlanco} 
+                                    { 
+                                        return symbol (sym.ESPACIO); 
+                                    }
+
+<YYINITIAL> {EspacioEnBlanco}       { 
+                                        
+                                        /* En este estado ignoramos los espacios en blanco*/ 
+                                    }
 /* error fallback */
 [^]                              { throw new Error("Simbolo no esperado <"+
                                                         yytext()+">"); }

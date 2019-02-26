@@ -13,12 +13,14 @@ import javax.swing.JFrame;
  */
 public class Main {
     
+    
     public static void ejecutar(){
         JFrame ventana=new SwingGUI().getUI();
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.setTitle("JMiniLogo");
         ventana.pack();
         ventana.setVisible(true);
+        
         
     }
     /**
