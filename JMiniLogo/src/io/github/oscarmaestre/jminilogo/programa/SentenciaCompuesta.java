@@ -50,6 +50,11 @@ public class SentenciaCompuesta extends Sentencia{
     public void anadirSentencia (Sentencia s){
         programa.add(s);
     }
+    
+    public Sentencia getUltimaSentencia(){
+        int ultimaPosicion=this.programa.size();
+        return this.programa.get(ultimaPosicion-1);
+    }
     @Override
     public boolean ejecutar(IContextoEjecucion contexto){
         if (this.isDebug()){
