@@ -56,11 +56,11 @@ scan with {: return s.next_token(); :};
 
 
 terminal            SUBELAPIZ, BAJALAPIZ, AVANZA, GIRA, PUNTOCOMA, ESPACIO, REPETIR, LLAVEABIERTA, LLAVECERRADA;
-terminal            String ENTERO; 
+terminal            String ENTERO, ROJO, NEGRO, AZUL; 
 
 
 non terminal            lista_sentencias;
-non terminal            subir, bajar, avanzar, girar, repetir;
+non terminal            subir, bajar, avanzar, girar, repetir, color;
 non terminal            sentencia, final_sentencia;
 
 
@@ -68,7 +68,10 @@ lista_sentencias ::= sentencia final_sentencia | sentencia final_sentencia lista
 
 final_sentencia  ::= PUNTOCOMA | ESPACIO PUNTOCOMA | ESPACIO PUNTOCOMA ESPACIO ;
 
-sentencia ::= subir | bajar | avanzar | girar | repetir ;
+sentencia ::= subir | bajar | avanzar | girar | repetir | color ;
+
+
+color ::= ROJO | NEGRO | AZUL;
 
 subir ::=   SUBELAPIZ {: 
                 System.out.println("Subiendo");

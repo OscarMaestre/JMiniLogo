@@ -14,8 +14,11 @@ public interface sym {
   public static final int BAJALAPIZ = 3;
   public static final int EOF = 0;
   public static final int LLAVECERRADA = 10;
+  public static final int ROJO = 12;
   public static final int ESPACIO = 7;
+  public static final int NEGRO = 13;
   public static final int error = 1;
+  public static final int AZUL = 14;
   public static final int PUNTOCOMA = 6;
   public static final int LLAVEABIERTA = 9;
   public static final int REPETIR = 8;
@@ -32,7 +35,10 @@ public interface sym {
   "REPETIR",
   "LLAVEABIERTA",
   "LLAVECERRADA",
-  "ENTERO"
+  "ENTERO",
+  "ROJO",
+  "NEGRO",
+  "AZUL"
   };
 }
 

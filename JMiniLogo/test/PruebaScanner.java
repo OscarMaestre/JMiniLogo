@@ -153,4 +153,17 @@ public class PruebaScanner {
         }
     }
     
+    @Test 
+    public void programaConColores(){
+        sr=new StringReader("subelapiz    ; rojo; bajalapiz     ;");
+        l=new Lexer(sr);
+        p=new Parser(l);
+        try {
+            p.parse();
+            SentenciaCompuesta s=p.getPrograma();
+        } catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }

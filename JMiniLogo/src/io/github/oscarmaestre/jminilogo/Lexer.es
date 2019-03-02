@@ -26,6 +26,10 @@ import java_cup.runtime.Symbol;
 %}
 
 
+Rojo            = "rojo";
+Negro           = "negro";
+Azul            = "azul";
+
 
 SubeLapiz       = "subelapiz"
 BajaLapiz       = "bajalapiz"  
@@ -96,6 +100,20 @@ PuntoComa       = ";"
                                         
                                         /* En este estado ignoramos los espacios en blanco*/ 
                                     }
+
+{Rojo}                          {
+                                    return symbol (sym.ROJO); 
+                                }
+
+{Negro}                         {
+                                    return symbol (sym.NEGRO); 
+                                }
+
+{Azul}                          {
+                                    return symbol (sym.AZUL); 
+                                }
+
+
 /* error fallback */
 [^]                              { throw new Error("Simbolo no esperado <"+
                                                         yytext()+">"); }
