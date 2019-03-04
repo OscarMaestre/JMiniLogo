@@ -192,6 +192,20 @@ public class SwingGUI extends GUI implements ActionListener{
         }
     }
     
+    public void cargarProgramaPrueba2(){
+        String programa;
+        programa ="repetir 10{\n" +
+            "	negro; avanza 220; gira 20;\n" +
+            "	azul; avanza 220; gira 20;\n" +
+            "	rojo; avanza 220; gira 20;\n" +
+            "	cyan; avanza 220; gira 20;	\n" +
+            "	magenta; avanza 220; gira 20;\n" +
+            "	amarillo; avanza 220; gira 20;\n" +
+            "	blanco; avanza 220; gira 20;	\n" +
+            "};";
+        this.txtAreaPrograma.setText(programa);
+        
+    }
     
     public void cargarProgramaPrueba(){
         String programa;

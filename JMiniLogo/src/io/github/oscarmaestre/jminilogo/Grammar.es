@@ -61,20 +61,25 @@ scan with {: return s.next_token(); :};
 
 
 terminal            ROJO, NEGRO, AZUL, VERDE, CYAN, MAGENTA, AMARILLO, BLANCO;
+terminal            String IDENTIFICADOR;
+terminal            PARENIZQ, PARENDER;
+terminal            PROCEDIMIENTO, COMA;
 terminal            SUBELAPIZ, BAJALAPIZ, AVANZA, GIRA, PUNTOCOMA, ESPACIO, REPETIR, LLAVEABIERTA, LLAVECERRADA;
 terminal            String ENTERO; 
 
 
 non terminal            lista_sentencias;
-non terminal            subir, bajar, avanzar, girar, repetir, color;
-non terminal            sentencia, final_sentencia;
+non terminal            subir, bajar, avanzar, girar, repetir, color, procedimiento;
+non terminal            sentencia, final_sentencia, lista_parametros;
 
 
 lista_sentencias ::= sentencia final_sentencia | sentencia final_sentencia lista_sentencias ;
 
 final_sentencia  ::= PUNTOCOMA | ESPACIO PUNTOCOMA | ESPACIO PUNTOCOMA ESPACIO ;
 
-sentencia ::= subir  | bajar | avanzar | girar | repetir | color ;
+sentencia ::= subir  | bajar | avanzar | girar | repetir | color | procedimiento;
+
+
 
 
 color ::= ROJO {:  this.parser.anadirSentenciaColor(
@@ -128,3 +133,10 @@ repetir::= REPETIR ESPACIO ENTERO:entero {:
             :}  LLAVEABIERTA lista_sentencias LLAVECERRADA {:
                 this.parser.terminarSentenciaRepetir();
             :};
+
+procedimiento ::= PROCEDIMIENTO IDENTIFICADOR:id
+                PARENIZQ {: System.out.println("Proc "+id); :} lista_parametros PARENDER
+                {: System.out.println ("Declaracion de proc completa"); :}
+                LLAVEABIERTA {:System.out.println("Incluyendo sentencias en proc"); :}lista_sentencias LLAVECERRADA;
+
+lista_parametros ::= IDENTIFICADOR:id {: System.out.println("Parametro:"+id); :} | IDENTIFICADOR:id {: System.out.println("Parametro:"+id); :}COMA lista_parametros;

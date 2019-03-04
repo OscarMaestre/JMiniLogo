@@ -195,4 +195,18 @@ public class PruebaScanner {
             Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    @Test 
+    public void programaConProcedimiento() throws IOException{
+        System.out.println("Procedimiento");
+        sr=new StringReader("procedimiento aaa (a, b) { rojo; };");
+        l=new Lexer(sr);
+        p=new Parser(l);
+        try {
+            p.parse();
+            //SentenciaCompuesta s=p.getPrograma();
+        } catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

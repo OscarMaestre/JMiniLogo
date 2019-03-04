@@ -8,26 +8,31 @@ package io.github.oscarmaestre.jminilogo;
 /** CUP generated interface containing symbol constants. */
 public interface sym {
   /* terminals */
-  public static final int SUBELAPIZ = 10;
+  public static final int SUBELAPIZ = 15;
   public static final int BLANCO = 9;
+  public static final int PROCEDIMIENTO = 13;
   public static final int VERDE = 5;
   public static final int ROJO = 2;
-  public static final int AVANZA = 12;
+  public static final int AVANZA = 17;
   public static final int AMARILLO = 8;
-  public static final int GIRA = 13;
+  public static final int GIRA = 18;
+  public static final int COMA = 14;
   public static final int EOF = 0;
-  public static final int LLAVEABIERTA = 17;
+  public static final int LLAVEABIERTA = 22;
   public static final int CYAN = 6;
-  public static final int REPETIR = 16;
+  public static final int PARENIZQ = 11;
+  public static final int REPETIR = 21;
   public static final int error = 1;
+  public static final int IDENTIFICADOR = 10;
+  public static final int PARENDER = 12;
   public static final int MAGENTA = 7;
   public static final int AZUL = 4;
-  public static final int PUNTOCOMA = 14;
-  public static final int ENTERO = 19;
-  public static final int ESPACIO = 15;
+  public static final int PUNTOCOMA = 19;
+  public static final int ENTERO = 24;
+  public static final int ESPACIO = 20;
   public static final int NEGRO = 3;
-  public static final int LLAVECERRADA = 18;
-  public static final int BAJALAPIZ = 11;
+  public static final int LLAVECERRADA = 23;
+  public static final int BAJALAPIZ = 16;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -39,6 +44,11 @@ public interface sym {
   "MAGENTA",
   "AMARILLO",
   "BLANCO",
+  "IDENTIFICADOR",
+  "PARENIZQ",
+  "PARENDER",
+  "PROCEDIMIENTO",
+  "COMA",
   "SUBELAPIZ",
   "BAJALAPIZ",
   "AVANZA",

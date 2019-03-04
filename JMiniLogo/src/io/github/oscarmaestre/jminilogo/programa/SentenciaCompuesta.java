@@ -3,10 +3,12 @@ package io.github.oscarmaestre.jminilogo.programa;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.HashMap;
+import javax.management.BadStringOperationException;
 
 public class SentenciaCompuesta extends Sentencia{
     ArrayList<Sentencia> programa=new ArrayList<Sentencia>();
-    
+    HashMap<String, Float> tablaSimbolos=new HashMap<>();
     protected boolean debug;
 
     /**
@@ -69,6 +71,16 @@ public class SentenciaCompuesta extends Sentencia{
         return true;
     }  
     
+    public void asignarValor (String simbolo, float valor){
+        this.tablaSimbolos.put(simbolo, valor);
+    }
+    public Float getValor (String simbolo) throws BadStringOperationException{
+        Float valor=this.tablaSimbolos.get(simbolo);
+        if (valor==null){
+            throw new BadStringOperationException("No existe la variable "+simbolo);
+        }
+        return valor;
+    }
     @Override
     public String toString() {
         String resultado="";

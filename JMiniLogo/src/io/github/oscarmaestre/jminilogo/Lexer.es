@@ -12,7 +12,7 @@ import java_cup.runtime.Symbol;
 %column
 %state NO_IGNORAR_ESPACIOS  
 %{
-      boolean DEPURANDO = false;
+      boolean DEPURANDO = true;
       StringBuffer string = new StringBuffer();
 
       private Symbol symbol(int type) {
@@ -38,6 +38,8 @@ Blanco          = "blanco"
 
 
 
+Identificador   = [a-zA-Z]+
+
 Gira            = "gira" 
 Avanza          = "avanza" 
 LlaveAbierta    = "{"
@@ -50,10 +52,15 @@ BajaLapiz       = "bajalapiz"
 Entero          =   0 | [1-9][0-9]*
 
 FinLinea        = \r|\n|\r\n
-
+Coma            = ","
 EspacioEnBlanco = ({FinLinea} | [ \t\f])+
 
+ParenIzq        = "("
+ParenDer        = ")"
+Procedimiento   = "procedimiento"{EspacioEnBlanco}
 %%
+
+
 
 
 {Rojo}                          {
@@ -131,6 +138,9 @@ EspacioEnBlanco = ({FinLinea} | [ \t\f])+
                         }
 {LlaveAbierta}          { return symbol (sym.LLAVEABIERTA); }
 {LlaveCerrada}          { return symbol (sym.LLAVECERRADA); }
+{ParenIzq}              { return symbol (sym.PARENIZQ); }
+{ParenDer}              { return symbol (sym.PARENDER); }
+{Coma}                  { return symbol (sym.COMA); }
 
 {PuntoComa}             { 
                             if (DEPURANDO){
@@ -164,6 +174,15 @@ EspacioEnBlanco = ({FinLinea} | [ \t\f])+
                                     }
 
 
+{Procedimiento}          { return symbol (sym.PROCEDIMIENTO); }
+
+{Identificador}                {
+                                    if (DEPURANDO){
+                                        System.out.println("Encontrado -IDENTIFICADOr-"+yytext());
+                                        System.out.println("Estabamos en el estado:"+yystate());
+                                    }
+                                    return symbol (sym.IDENTIFICADOR, new String(yytext())); 
+                                }
 
 
 /* error fallback */
