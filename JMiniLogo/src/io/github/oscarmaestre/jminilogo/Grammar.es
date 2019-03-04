@@ -1,6 +1,7 @@
 package io.github.oscarmaestre.jminilogo;
 import java_cup.runtime.*;
 import java.util.Stack;
+import java.awt.Color;
 import io.github.oscarmaestre.jminilogo.programa.*;
 parser code {:
     Lexer s;
@@ -36,6 +37,10 @@ parser code {:
         pila.push ( programa );
         programa=new SentenciaCompuesta();
     }
+    public void anadirSentenciaColor(Color color){
+        SentenciaColor sentenciaColor = new SentenciaColor(color);
+        programa.anadirSentencia(sentenciaColor);
+    }
     public void terminarSentenciaRepetir(){
         SentenciaCompuesta cuerpoRepetir = programa;
         SentenciaCompuesta programaAnterior=pila.pop();
@@ -55,8 +60,9 @@ init with {: s.init(); :};
 scan with {: return s.next_token(); :};
 
 
+terminal            ROJO, NEGRO, AZUL, VERDE, CYAN, MAGENTA, AMARILLO, BLANCO;
 terminal            SUBELAPIZ, BAJALAPIZ, AVANZA, GIRA, PUNTOCOMA, ESPACIO, REPETIR, LLAVEABIERTA, LLAVECERRADA;
-terminal            String ENTERO, ROJO, NEGRO, AZUL; 
+terminal            String ENTERO; 
 
 
 non terminal            lista_sentencias;
@@ -68,10 +74,33 @@ lista_sentencias ::= sentencia final_sentencia | sentencia final_sentencia lista
 
 final_sentencia  ::= PUNTOCOMA | ESPACIO PUNTOCOMA | ESPACIO PUNTOCOMA ESPACIO ;
 
-sentencia ::= subir | bajar | avanzar | girar | repetir | color ;
+sentencia ::= subir  | bajar | avanzar | girar | repetir | color ;
 
 
-color ::= ROJO | NEGRO | AZUL;
+color ::= ROJO {:  this.parser.anadirSentenciaColor(
+                FabricaColores.getColorSpectrum(FabricaColores.ZX_SPECTRUM_CYAN)
+                ); :}|  
+          NEGRO {:  this.parser.anadirSentenciaColor(
+                FabricaColores.getColorSpectrum(FabricaColores.ZX_SPECTRUM_BLACK)
+                ); :}  | 
+          AZUL {:  this.parser.anadirSentenciaColor(
+                FabricaColores.getColorSpectrum(FabricaColores.ZX_SPECTRUM_BLUE)
+                ); :}  | 
+          CYAN {:  this.parser.anadirSentenciaColor(
+                FabricaColores.getColorSpectrum(FabricaColores.ZX_SPECTRUM_CYAN)
+                ); :}  | 
+          BLANCO {:  this.parser.anadirSentenciaColor(
+                FabricaColores.getColorSpectrum(FabricaColores.ZX_SPECTRUM_WHITE)
+                ); :}| 
+        AMARILLO {:  this.parser.anadirSentenciaColor(
+                FabricaColores.getColorSpectrum(FabricaColores.ZX_SPECTRUM_YELLOW)
+                ); :}| 
+        MAGENTA {:  this.parser.anadirSentenciaColor(
+                FabricaColores.getColorSpectrum(FabricaColores.ZX_SPECTRUM_MAGENTA)
+                ); :} |
+        VERDE {:  this.parser.anadirSentenciaColor(
+                FabricaColores.getColorSpectrum(FabricaColores.ZX_SPECTRUM_GREEN)
+                ); :} ;
 
 subir ::=   SUBELAPIZ {: 
                 System.out.println("Subiendo");

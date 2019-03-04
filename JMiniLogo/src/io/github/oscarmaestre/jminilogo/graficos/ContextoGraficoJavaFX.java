@@ -1,6 +1,7 @@
 package io.github.oscarmaestre.jminilogo.graficos;
 
 import io.github.oscarmaestre.jminilogo.programa.IContextoEjecucion;
+import java.awt.Color;
 import javafx.scene.canvas.Canvas;
 
 public class ContextoGraficoJavaFX implements IContextoEjecucion{
@@ -43,6 +44,11 @@ public class ContextoGraficoJavaFX implements IContextoEjecucion{
     @Override
     public void gira(int grados) {
         this.gradosActuales = (this.gradosActuales + grados ) % 360;
+    }
+
+    @Override
+    public void cambiaColorActivo(Color color) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -170,8 +170,8 @@ public class SwingGUI extends GUI implements ActionListener{
         
         Graphics2D contextoGrafico=(Graphics2D) this.panelDibujo.getGraphics();
         ContextoGraficoSwing contextoSwing;
-        int x_inicial=200;
-        int y_inicial=200;
+        int x_inicial=this.panelDibujo.getWidth()/2;
+        int y_inicial=this.panelDibujo.getHeight()/2;
         boolean lapizActivado=true;
         int gradosIniciales=-90;
         contextoSwing=new ContextoGraficoSwing(contextoGrafico, x_inicial, y_inicial, lapizActivado, gradosIniciales);
@@ -195,7 +195,7 @@ public class SwingGUI extends GUI implements ActionListener{
     
     public void cargarProgramaPrueba(){
         String programa;
-        programa="repetir 5\n{\n\tavanza 50;\n\tgira 20;\n};avanza 20;gira 20;avanza 20;gira 20;avanza 20;gira 20;avanza 20;gira 20;";
+        programa="repetir 5\n{\n\tnegro; avanza 50;\n\tgira 20;\n};azul; avanza 20;gira 20; magenta; avanza 20;gira 20;avanza 20;gira 20;avanza 20;gira 20;";
         this.txtAreaPrograma.setText(programa);
     }
     

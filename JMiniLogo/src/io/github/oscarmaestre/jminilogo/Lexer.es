@@ -26,10 +26,24 @@ import java_cup.runtime.Symbol;
 %}
 
 
-Rojo            = "rojo";
-Negro           = "negro";
-Azul            = "azul";
 
+Negro           = "negro"
+Azul            = "azul"
+Rojo            = "rojo"
+Magenta         = "magenta"
+Verde           = "verde"
+Cyan            = "cyan"
+Amarillo        = "amarillo"
+Blanco          = "blanco"
+
+
+
+Gira            = "gira" 
+Avanza          = "avanza" 
+LlaveAbierta    = "{"
+LlaveCerrada    = "}"
+Repetir         = "repetir"
+PuntoComa       = ";"
 
 SubeLapiz       = "subelapiz"
 BajaLapiz       = "bajalapiz"  
@@ -38,34 +52,70 @@ Entero          =   0 | [1-9][0-9]*
 FinLinea        = \r|\n|\r\n
 
 EspacioEnBlanco = ({FinLinea} | [ \t\f])+
-Gira            = "gira" 
-Avanza          = "avanza" 
-LlaveAbierta    = "{"
-LlaveCerrada    = "}"
-Repetir         = "repetir"
-PuntoComa       = ";"
+
 %%
 
-<YYINITIAL> {SubeLapiz}             { 
+
+{Rojo}                          {
+                                    if (DEPURANDO){
+                                        System.out.println("Encontrado -rojo-");
+                                        System.out.println("Estabamos en el estado:"+yystate());
+                                    }
+                                    return symbol (sym.ROJO); 
+                                }
+
+{Negro}                         {
+                                    if (DEPURANDO){
+                                        System.out.println("Encontrado -negro-");
+                                        System.out.println("Estabamos en el estado:"+yystate());
+                                    }
+                                    return symbol (sym.NEGRO); 
+                                }
+
+{Azul}                          {
+                                    if (DEPURANDO){
+                                        System.out.println("Encontrado -azul-");
+                                        System.out.println("Estabamos en el estado:"+yystate());
+                                    }
+                                    return symbol (sym.AZUL); 
+                                }
+
+{Magenta}                       {
+                                    return symbol (sym.MAGENTA); 
+                                }
+{Amarillo}                      {
+                                    return symbol (sym.AMARILLO); 
+                                }
+{Cyan}                          {
+                                    return symbol (sym.CYAN); 
+                                }
+{Verde}                         {
+                                    return symbol (sym.VERDE); 
+                                }
+{Blanco}                        {
+                                    return symbol (sym.BLANCO); 
+                                }
+
+{SubeLapiz}             { 
                                         if (DEPURANDO){
                                             System.out.println("Encontrando -subelapiz-");
                                         }
                                         return symbol (sym.SUBELAPIZ); 
                                     }
-<YYINITIAL> {BajaLapiz}             { 
+{BajaLapiz}             { 
                                         if (DEPURANDO){
                                             System.out.println("Encontrando -bajalapiz-");
                                         }
                                         return symbol (sym.BAJALAPIZ); 
                                     }
-<YYINITIAL> {Gira}                  { 
+{Gira}                  { 
                                         if (DEPURANDO){
                                             System.out.println("Encontrando -gira-, aceptando espacios...");
                                         }
                                         yybegin(NO_IGNORAR_ESPACIOS); 
                                         return symbol (sym.GIRA); 
                                     }
-<YYINITIAL> {Avanza}                { 
+ {Avanza}                { 
                                         if (DEPURANDO){
                                             System.out.println("Encontrando -avanza-, aceptando espacios...");
                                         }
@@ -82,7 +132,13 @@ PuntoComa       = ";"
 {LlaveAbierta}          { return symbol (sym.LLAVEABIERTA); }
 {LlaveCerrada}          { return symbol (sym.LLAVECERRADA); }
 
-{PuntoComa}             { yybegin(YYINITIAL);return symbol (sym.PUNTOCOMA); }
+{PuntoComa}             { 
+                            if (DEPURANDO){
+                                System.out.println("Encontrando -Punto y coma-"+yytext());  
+                                System.out.println("Estabamos en el estado:"+yystate());
+                            }
+                            yybegin(YYINITIAL);return symbol (sym.PUNTOCOMA); 
+                        }
 {Entero}                { 
                                         yybegin(YYINITIAL); 
                                         if (DEPURANDO){
@@ -93,25 +149,21 @@ PuntoComa       = ";"
 
 <NO_IGNORAR_ESPACIOS>{EspacioEnBlanco} 
                                     { 
+                                        if (DEPURANDO){
+                                            System.out.println("Encontrando -espacio que NO IGNORAMOS-"+yytext());
+                                        }
                                         return symbol (sym.ESPACIO); 
                                     }
 
-<YYINITIAL> {EspacioEnBlanco}       { 
+{EspacioEnBlanco}       { 
+                                        if (DEPURANDO){
+                                            System.out.println("Encontrando -espacio que ignorar-"+yytext());
+                                        }
                                         
                                         /* En este estado ignoramos los espacios en blanco*/ 
                                     }
 
-{Rojo}                          {
-                                    return symbol (sym.ROJO); 
-                                }
 
-{Negro}                         {
-                                    return symbol (sym.NEGRO); 
-                                }
-
-{Azul}                          {
-                                    return symbol (sym.AZUL); 
-                                }
 
 
 /* error fallback */

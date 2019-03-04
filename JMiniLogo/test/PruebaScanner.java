@@ -7,9 +7,12 @@
 import io.github.oscarmaestre.jminilogo.Parser;
 import io.github.oscarmaestre.jminilogo.Lexer;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaCompuesta;
+import java.io.IOException;
 import java.io.StringReader;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java_cup.runtime.Symbol;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -142,7 +145,7 @@ public class PruebaScanner {
     
     @Test 
     public void programaSimple(){
-        sr=new StringReader("subelapiz;");
+        sr=new StringReader("     subelapiz   ;      ");
         l=new Lexer(sr);
         p=new Parser(l);
         try {
@@ -154,16 +157,42 @@ public class PruebaScanner {
     }
     
     @Test 
-    public void programaConColores(){
-        sr=new StringReader("subelapiz    ; rojo; bajalapiz     ;");
+    public void programaNegro(){
+        System.out.println("Negro");
+        sr=new StringReader("negro;");
         l=new Lexer(sr);
         p=new Parser(l);
         try {
             p.parse();
-            SentenciaCompuesta s=p.getPrograma();
+            //SentenciaCompuesta s=p.getPrograma();
         } catch (Exception ex) {
             Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+    @Test 
+    public void programaRojo(){
+        System.out.println("Rojo");
+        sr=new StringReader("rojo;");
+        l=new Lexer(sr);
+        p=new Parser(l);
+        try {
+            p.parse();
+            //SentenciaCompuesta s=p.getPrograma();
+        } catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    @Test 
+    public void programaAzul() throws IOException{
+        System.out.println("Azul");
+        sr=new StringReader("azul   ;");
+        l=new Lexer(sr);
+        p=new Parser(l);
+        try {
+            p.parse();
+            //SentenciaCompuesta s=p.getPrograma();
+        } catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

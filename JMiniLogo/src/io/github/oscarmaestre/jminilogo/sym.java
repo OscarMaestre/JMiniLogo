@@ -8,24 +8,37 @@ package io.github.oscarmaestre.jminilogo;
 /** CUP generated interface containing symbol constants. */
 public interface sym {
   /* terminals */
-  public static final int SUBELAPIZ = 2;
-  public static final int AVANZA = 4;
-  public static final int ENTERO = 11;
-  public static final int BAJALAPIZ = 3;
+  public static final int SUBELAPIZ = 10;
+  public static final int BLANCO = 9;
+  public static final int VERDE = 5;
+  public static final int ROJO = 2;
+  public static final int AVANZA = 12;
+  public static final int AMARILLO = 8;
+  public static final int GIRA = 13;
   public static final int EOF = 0;
-  public static final int LLAVECERRADA = 10;
-  public static final int ROJO = 12;
-  public static final int ESPACIO = 7;
-  public static final int NEGRO = 13;
+  public static final int LLAVEABIERTA = 17;
+  public static final int CYAN = 6;
+  public static final int REPETIR = 16;
   public static final int error = 1;
-  public static final int AZUL = 14;
-  public static final int PUNTOCOMA = 6;
-  public static final int LLAVEABIERTA = 9;
-  public static final int REPETIR = 8;
-  public static final int GIRA = 5;
+  public static final int MAGENTA = 7;
+  public static final int AZUL = 4;
+  public static final int PUNTOCOMA = 14;
+  public static final int ENTERO = 19;
+  public static final int ESPACIO = 15;
+  public static final int NEGRO = 3;
+  public static final int LLAVECERRADA = 18;
+  public static final int BAJALAPIZ = 11;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
+  "ROJO",
+  "NEGRO",
+  "AZUL",
+  "VERDE",
+  "CYAN",
+  "MAGENTA",
+  "AMARILLO",
+  "BLANCO",
   "SUBELAPIZ",
   "BAJALAPIZ",
   "AVANZA",
@@ -35,10 +48,7 @@ public interface sym {
   "REPETIR",
   "LLAVEABIERTA",
   "LLAVECERRADA",
-  "ENTERO",
-  "ROJO",
-  "NEGRO",
-  "AZUL"
+  "ENTERO"
   };
 }
 

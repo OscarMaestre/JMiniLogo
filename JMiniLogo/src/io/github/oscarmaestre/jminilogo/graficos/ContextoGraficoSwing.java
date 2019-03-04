@@ -1,6 +1,7 @@
 package io.github.oscarmaestre.jminilogo.graficos;
 
 import io.github.oscarmaestre.jminilogo.programa.IContextoEjecucion;
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class ContextoGraficoSwing implements IContextoEjecucion{
@@ -8,7 +9,7 @@ public class ContextoGraficoSwing implements IContextoEjecucion{
     int x, y;
     boolean lapizActivado;
     int grados;
-
+    Color colorActivo;
     public ContextoGraficoSwing(Graphics2D contextoGrafico, int x, int y, boolean lapizActivado, int grados) {
         this.contextoGrafico = contextoGrafico;
         this.x = x;
@@ -53,5 +54,12 @@ public class ContextoGraficoSwing implements IContextoEjecucion{
     public void gira(int grados) {
         this.grados+=grados;
     }
+
+    @Override
+    public void cambiaColorActivo(Color color) {
+        this.colorActivo=color;
+        this.contextoGrafico.setColor(color);
+    }
+    
 
 }
