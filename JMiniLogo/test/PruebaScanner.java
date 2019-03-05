@@ -209,4 +209,31 @@ public class PruebaScanner {
             Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    @Test 
+    public void asignacionSimple() throws IOException{
+        System.out.println("i=3;");
+        sr=new StringReader("i=3;");
+        l=new Lexer(sr);
+        p=new Parser(l);
+        try {
+            p.parse();
+            //SentenciaCompuesta s=p.getPrograma();
+        } catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    @Test 
+    public void asignacionDoble() throws IOException{
+        System.out.println("i=-3;j=i;");
+        sr=new StringReader("i=-3;j=i;");
+        l=new Lexer(sr);
+        p=new Parser(l);
+        try {
+            p.parse();
+            //SentenciaCompuesta s=p.getPrograma();
+        } catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

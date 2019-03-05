@@ -8,7 +8,7 @@ import javax.management.BadStringOperationException;
 
 public class SentenciaCompuesta extends Sentencia{
     ArrayList<Sentencia> programa=new ArrayList<Sentencia>();
-    HashMap<String, Float> tablaSimbolos=new HashMap<>();
+    HashMap<String, Integer> tablaSimbolos=new HashMap<>();
     protected boolean debug;
 
     /**
@@ -71,11 +71,11 @@ public class SentenciaCompuesta extends Sentencia{
         return true;
     }  
     
-    public void asignarValor (String simbolo, float valor){
+    public void asignarValor (String simbolo, Integer valor){
         this.tablaSimbolos.put(simbolo, valor);
     }
-    public Float getValor (String simbolo) throws BadStringOperationException{
-        Float valor=this.tablaSimbolos.get(simbolo);
+    public Integer getValor (String simbolo) throws BadStringOperationException{
+        Integer valor=this.tablaSimbolos.get(simbolo);
         if (valor==null){
             throw new BadStringOperationException("No existe la variable "+simbolo);
         }

@@ -36,7 +36,7 @@ Cyan            = "cyan"
 Amarillo        = "amarillo"
 Blanco          = "blanco"
 
-
+Ejecutar        = "ejecutar"
 
 Identificador   = [a-zA-Z]+
 
@@ -49,8 +49,13 @@ PuntoComa       = ";"
 
 SubeLapiz       = "subelapiz"
 BajaLapiz       = "bajalapiz"  
-Entero          =   0 | [1-9][0-9]*
+Entero          =  "-"?( 0 | [1-9][0-9]*)
 
+Suma            = "+"
+Resta           = "-"
+Multiplicacion  = "*"
+Division        = "/"
+SignoIgual      = "="
 FinLinea        = \r|\n|\r\n
 Coma            = ","
 EspacioEnBlanco = ({FinLinea} | [ \t\f])+
@@ -175,7 +180,9 @@ Procedimiento   = "procedimiento"{EspacioEnBlanco}
 
 
 {Procedimiento}          { return symbol (sym.PROCEDIMIENTO); }
-
+{Ejecutar}                        {
+                                    return symbol (sym.EJECUTAR); 
+                                }
 {Identificador}                {
                                     if (DEPURANDO){
                                         System.out.println("Encontrado -IDENTIFICADOr-"+yytext());
@@ -184,7 +191,11 @@ Procedimiento   = "procedimiento"{EspacioEnBlanco}
                                     return symbol (sym.IDENTIFICADOR, new String(yytext())); 
                                 }
 
-
+{Suma}                      { return symbol (sym.SUMA); }
+{Resta}                     { return symbol (sym.RESTA); }
+{Multiplicacion}            { return symbol (sym.MULTIPLICACION); }
+{Division}                  { return symbol (sym.DIVISION); }
+{SignoIgual}                { return symbol (sym.IGUAL); }
 /* error fallback */
 [^]                              { throw new Error("Simbolo no esperado <"+
                                                         yytext()+">"); }

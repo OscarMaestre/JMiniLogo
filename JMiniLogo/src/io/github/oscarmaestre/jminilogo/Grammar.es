@@ -3,6 +3,7 @@ import java_cup.runtime.*;
 import java.util.Stack;
 import java.awt.Color;
 import io.github.oscarmaestre.jminilogo.programa.*;
+import javax.management.BadStringOperationException;
 parser code {:
     Lexer s;
     SentenciaCompuesta programa;
@@ -11,6 +12,23 @@ parser code {:
         this.s=scanner;
         programa=new SentenciaCompuesta();
     }
+    public Integer getValor(String simbolo) throws BadStringOperationException{
+        return programa.getValor(simbolo);
+    }
+    public void setValor(String simbolo, Integer valor){
+        this.programa.asignarValor(simbolo, valor);
+    }
+    public void setValor(String simbolo, String valor){
+        Integer iValor=Integer.parseInt(valor);
+        this.programa.asignarValor(simbolo, iValor);
+    }
+    public void setValor(String simbolo, Object valor){
+        String strValor=valor.toString();
+        Integer iValor=Integer.parseInt(strValor);
+        this.programa.asignarValor(simbolo, iValor);
+    }
+
+    
     public void anadirSentenciaSubeLapiz(){
         Sentencia sentencia=new SentenciaSubeLapiz();
         programa.anadirSentencia ( sentencia );
@@ -37,6 +55,16 @@ parser code {:
         pila.push ( programa );
         programa=new SentenciaCompuesta();
     }
+    
+    public void anadirSentenciaProcedimiento(String nombre){
+        
+        System.out.println("Anadiendo procedimiento:"+ nombre);
+        SentenciaProcedimiento sentenciaProcedimiento = new SentenciaProcedimiento(nombre);
+        programa.anadirSentencia(sentenciaProcedimiento);
+        pila.push ( programa );
+        programa=new SentenciaCompuesta();
+    }
+
     public void anadirSentenciaColor(Color color){
         SentenciaColor sentenciaColor = new SentenciaColor(color);
         programa.anadirSentencia(sentenciaColor);
@@ -48,7 +76,15 @@ parser code {:
 
         sentenciaRepetir.setSentenciaCompuesta( cuerpoRepetir );
         this.programa = programaAnterior;
-        System.out.println("Termino el repetir");
+    }
+    public void terminarSentenciaProcedimiento(){
+        SentenciaCompuesta cuerpoProcedimiento = programa;
+        SentenciaCompuesta programaAnterior=pila.pop();
+        SentenciaProcedimiento sentenciaProcedimiento=(SentenciaProcedimiento)
+                    programaAnterior.getUltimaSentencia();
+
+        sentenciaProcedimiento.setCuerpoProcedimiento( cuerpoProcedimiento );
+        this.programa = programaAnterior;
     }
     public SentenciaCompuesta getPrograma(){
         return programa;
@@ -63,7 +99,8 @@ scan with {: return s.next_token(); :};
 terminal            ROJO, NEGRO, AZUL, VERDE, CYAN, MAGENTA, AMARILLO, BLANCO;
 terminal            String IDENTIFICADOR;
 terminal            PARENIZQ, PARENDER;
-terminal            PROCEDIMIENTO, COMA;
+terminal            SUMA, RESTA, MULTIPLICACION, DIVISION, IGUAL;
+terminal            PROCEDIMIENTO, COMA, EJECUTAR;
 terminal            SUBELAPIZ, BAJALAPIZ, AVANZA, GIRA, PUNTOCOMA, ESPACIO, REPETIR, LLAVEABIERTA, LLAVECERRADA;
 terminal            String ENTERO; 
 
@@ -71,13 +108,13 @@ terminal            String ENTERO;
 non terminal            lista_sentencias;
 non terminal            subir, bajar, avanzar, girar, repetir, color, procedimiento;
 non terminal            sentencia, final_sentencia, lista_parametros;
-
+non terminal                asignacion, expresion_matematica_simple;
 
 lista_sentencias ::= sentencia final_sentencia | sentencia final_sentencia lista_sentencias ;
 
 final_sentencia  ::= PUNTOCOMA | ESPACIO PUNTOCOMA | ESPACIO PUNTOCOMA ESPACIO ;
 
-sentencia ::= subir  | bajar | avanzar | girar | repetir | color | procedimiento;
+sentencia ::= subir  | bajar | avanzar | girar | repetir | color | procedimiento | asignacion;
 
 
 
@@ -106,6 +143,14 @@ color ::= ROJO {:  this.parser.anadirSentenciaColor(
         VERDE {:  this.parser.anadirSentenciaColor(
                 FabricaColores.getColorSpectrum(FabricaColores.ZX_SPECTRUM_GREEN)
                 ); :} ;
+
+
+asignacion ::= IDENTIFICADOR:id IGUAL expresion_matematica_simple:entero 
+                {:this.parser.setValor(id, entero); System.out.println(id+"<-"+entero);:};
+
+expresion_matematica_simple ::= ENTERO:entero {: RESULT=entero; :} |
+                IDENTIFICADOR:id {: RESULT = this.parser.getValor(id);
+                System.out.println("Tabla tiene el valor "+RESULT+" para el simbolo:"+id); :};
 
 subir ::=   SUBELAPIZ {: 
                 System.out.println("Subiendo");
