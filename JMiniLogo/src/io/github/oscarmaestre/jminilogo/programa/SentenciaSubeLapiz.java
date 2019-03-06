@@ -1,16 +1,18 @@
 package io.github.oscarmaestre.jminilogo.programa;
 
-public class SentenciaSubeLapiz extends Sentencia{
+import java.util.HashMap;
 
-    @Override
-    public boolean ejecutar(IContextoEjecucion contexto) {
-        contexto.subeLapiz();
-        return true;
-    }
+public class SentenciaSubeLapiz extends Sentencia{
     
     @Override
     public String toString() {
         return " subelapiz;";
+    }
+
+    @Override
+    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) {
+        contexto.subeLapiz();
+        return true;
     }
 
 }

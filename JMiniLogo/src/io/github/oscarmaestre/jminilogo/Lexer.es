@@ -181,6 +181,9 @@ Procedimiento   = "procedimiento"{EspacioEnBlanco}
 
 {Procedimiento}          { return symbol (sym.PROCEDIMIENTO); }
 {Ejecutar}                        {
+                                    if (DEPURANDO){
+                                            System.out.println("Encontrando -EJECUTAR-");
+                                        }
                                     return symbol (sym.EJECUTAR); 
                                 }
 {Identificador}                {

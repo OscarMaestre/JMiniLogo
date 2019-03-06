@@ -2,6 +2,7 @@ package io.github.oscarmaestre.jminilogo.programa;
 
 import io.github.oscarmaestre.jminilogo.FabricaColores;
 import java.awt.Color;
+import java.util.HashMap;
 
 public class SentenciaColor extends Sentencia{
 
@@ -21,7 +22,7 @@ public class SentenciaColor extends Sentencia{
     }
     
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto) {
+    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) {
         contexto.cambiaColorActivo(this.color);
         return true;
     }

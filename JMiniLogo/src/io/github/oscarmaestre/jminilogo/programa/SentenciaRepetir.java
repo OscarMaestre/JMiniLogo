@@ -1,5 +1,7 @@
 package io.github.oscarmaestre.jminilogo.programa;
 
+import java.util.HashMap;
+
 public class SentenciaRepetir extends Sentencia{
     int veces;
     SentenciaCompuesta cuerpoRepetir;
@@ -11,9 +13,9 @@ public class SentenciaRepetir extends Sentencia{
     }
     
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto) {
+    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) {
         for (int i=0; i<this.veces; i++){
-            this.cuerpoRepetir.ejecutar(contexto);
+            this.cuerpoRepetir.ejecutar(contexto, tablaSimbolos);
         }
         return true;
     }

@@ -908,7 +908,10 @@ public class Lexer implements java_cup.runtime.Scanner, sym {
             // fall through
           case 57: break;
           case 27: 
-            { return symbol (sym.EJECUTAR);
+            { if (DEPURANDO){
+                                            System.out.println("Encontrando -EJECUTAR-");
+                                        }
+                                    return symbol (sym.EJECUTAR);
             } 
             // fall through
           case 58: break;

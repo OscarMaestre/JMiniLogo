@@ -58,7 +58,7 @@ public class SentenciaCompuesta extends Sentencia{
         return this.programa.get(ultimaPosicion-1);
     }
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto){
+    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos){
         if (this.isDebug()){
             System.out.println("Ejecutando programa...");
         }
@@ -66,7 +66,7 @@ public class SentenciaCompuesta extends Sentencia{
             if (this.isDebug()){
                 System.out.println(s);
             }
-            s.ejecutar(contexto);
+            s.ejecutar(contexto, tablaSimbolos);
         }
         return true;
     }  

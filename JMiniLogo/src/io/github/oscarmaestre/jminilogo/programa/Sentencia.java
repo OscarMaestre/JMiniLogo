@@ -1,5 +1,7 @@
 package io.github.oscarmaestre.jminilogo.programa;
 
+import java.util.HashMap;
+
 public abstract class Sentencia {
     boolean pasoAPaso;
 
@@ -11,7 +13,7 @@ public abstract class Sentencia {
         this.pasoAPaso = pasoAPaso;
     }
     
-    public abstract boolean ejecutar(IContextoEjecucion contexto);
+    public abstract boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos);
     @Override
     public abstract String toString();
 }

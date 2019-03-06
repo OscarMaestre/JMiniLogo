@@ -6,6 +6,7 @@
 
 import io.github.oscarmaestre.jminilogo.Parser;
 import io.github.oscarmaestre.jminilogo.Lexer;
+import io.github.oscarmaestre.jminilogo.graficos.ContextoConsola;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaCompuesta;
 import java.io.IOException;
 import java.io.StringReader;
@@ -199,12 +200,16 @@ public class PruebaScanner {
     @Test 
     public void programaConProcedimiento() throws IOException{
         System.out.println("Procedimiento");
-        sr=new StringReader("procedimiento aaa (a, b) { rojo; };");
+        sr=new StringReader("procedimiento aaa (a, b) { rojo; };  ejecutar aaa(3, 4);");
         l=new Lexer(sr);
         p=new Parser(l);
         try {
             p.parse();
-            //SentenciaCompuesta s=p.getPrograma();
+            SentenciaCompuesta s=p.getPrograma();
+            System.out.println(s.toString());
+            ContextoConsola c=new ContextoConsola();
+            s.ejecutar(c, null);
+            
         } catch (Exception ex) {
             Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
         }

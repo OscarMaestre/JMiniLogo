@@ -183,7 +183,8 @@ public class SwingGUI extends GUI implements ActionListener{
             p.parse();
             SentenciaCompuesta s=p.getPrograma();
             s.setDebug(true);
-            s.ejecutar(contextoSwing);
+            System.out.println("Esta desactivada la ejecución en Swing");
+            //s.ejecutar(contextoSwing);
             
             System.out.println("Programa ejecutado");
             System.out.println(s.toString());
