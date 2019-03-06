@@ -50,12 +50,17 @@ public class SentenciaCompuesta extends Sentencia{
     }
 
     public void anadirSentencia (Sentencia s){
+        //System.out.println("Anadiendo sentencia..."+s.toString());
         programa.add(s);
     }
     
     public Sentencia getUltimaSentencia(){
         int ultimaPosicion=this.programa.size();
         return this.programa.get(ultimaPosicion-1);
+    }
+    
+    public void borrarSentencia(Sentencia s){
+        this.programa.remove(s);
     }
     @Override
     public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos){

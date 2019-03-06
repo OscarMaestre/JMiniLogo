@@ -287,7 +287,15 @@ public class Parser extends java_cup.runtime.lr_parser {
         this.procedimientos.put(sentenciaProcedimiento.getNombre(), sentenciaProcedimiento);
         //programa.anadirSentencia(sentenciaProcedimiento);
         pila.push ( programa );
-        programa=new SentenciaCompuesta();
+        programa=sentenciaProcedimiento;
+    }
+    public void terminarSentenciaProcedimiento(){
+        SentenciaCompuesta programaAnterior=pila.pop();
+        /*SentenciaProcedimiento sentenciaProcedimiento=(SentenciaProcedimiento)
+                    programaAnterior.getUltimaSentencia();*/
+
+        //sentenciaProcedimiento.setCuerpoProcedimiento( programa );
+        this.programa = programaAnterior;
     }
 
     public void anadirSentenciaEjecutar(SentenciaEjecutar s){
@@ -307,15 +315,7 @@ public class Parser extends java_cup.runtime.lr_parser {
         sentenciaRepetir.setSentenciaCompuesta( cuerpoRepetir );
         this.programa = programaAnterior;
     }
-    public void terminarSentenciaProcedimiento(){
-        SentenciaCompuesta cuerpoProcedimiento = programa;
-        SentenciaCompuesta programaAnterior=pila.pop();
-        SentenciaProcedimiento sentenciaProcedimiento=(SentenciaProcedimiento)
-                    programaAnterior.getUltimaSentencia();
-
-        sentenciaProcedimiento.setCuerpoProcedimiento( cuerpoProcedimiento );
-        this.programa = programaAnterior;
-    }
+   
     public SentenciaCompuesta getPrograma(){
         return programa;
     }

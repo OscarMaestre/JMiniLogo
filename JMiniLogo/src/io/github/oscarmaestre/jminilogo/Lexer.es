@@ -12,7 +12,7 @@ import java_cup.runtime.Symbol;
 %column
 %state NO_IGNORAR_ESPACIOS  
 %{
-      boolean DEPURANDO = true;
+      boolean DEPURANDO = false;
       StringBuffer string = new StringBuffer();
 
       private Symbol symbol(int type) {

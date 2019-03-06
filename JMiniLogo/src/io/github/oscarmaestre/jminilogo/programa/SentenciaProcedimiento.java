@@ -3,7 +3,7 @@ package io.github.oscarmaestre.jminilogo.programa;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SentenciaProcedimiento extends Sentencia{
+public class SentenciaProcedimiento extends SentenciaCompuesta{
     String nombre;
     SentenciaCompuesta cuerpoProcedimiento;
     protected ArrayList<String> nombresParametros;
@@ -27,14 +27,15 @@ public class SentenciaProcedimiento extends Sentencia{
     }
     
     
-    
-    public void setCuerpoProcedimiento(SentenciaCompuesta cuerpo){
-        this.cuerpoProcedimiento = cuerpo;
-    }
+ 
     
     @Override
     public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) {
-        this.cuerpoProcedimiento.ejecutar(contexto, tablaSimbolos);
+        System.out.println("Iniciando ejecucion proc "+this.nombre);
+        for (Sentencia s:programa){
+            s.ejecutar(contexto, tablaSimbolos);
+        }
+        
         return true;
     }
 

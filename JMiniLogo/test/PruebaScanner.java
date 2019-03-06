@@ -200,7 +200,7 @@ public class PruebaScanner {
     @Test 
     public void programaConProcedimiento() throws IOException{
         System.out.println("Procedimiento");
-        sr=new StringReader("procedimiento aaa (a, b) { rojo; };  ejecutar aaa(3, 4);");
+        sr=new StringReader("procedimiento aaa (a, b) { rojo; negro; };  ejecutar aaa(3, 4);");
         l=new Lexer(sr);
         p=new Parser(l);
         try {
@@ -208,7 +208,29 @@ public class PruebaScanner {
             SentenciaCompuesta s=p.getPrograma();
             System.out.println(s.toString());
             ContextoConsola c=new ContextoConsola();
+            System.out.println("Iniciamos ejecucion");
             s.ejecutar(c, null);
+            System.out.println("Fin ejecucion");
+            
+        } catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Test 
+    public void programaConProcedimiento2Ejecutar() throws IOException{
+        System.out.println("Procedimiento");
+        sr=new StringReader("procedimiento aaa (a, b) { rojo; negro; };  ejecutar aaa(3, 4); ejecutar aaa(3, 4);");
+        l=new Lexer(sr);
+        p=new Parser(l);
+        try {
+            p.parse();
+            SentenciaCompuesta s=p.getPrograma();
+            System.out.println(s.toString());
+            ContextoConsola c=new ContextoConsola();
+            System.out.println("Iniciamos ejecucion");
+            s.ejecutar(c, null);
+            System.out.println("Fin ejecucion");
             
         } catch (Exception ex) {
             Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);

@@ -337,7 +337,7 @@ public class Lexer implements java_cup.runtime.Scanner, sym {
   private int zzFinalHighSurrogate = 0;
 
   /* user code: */
-      boolean DEPURANDO = true;
+      boolean DEPURANDO = false;
       StringBuffer string = new StringBuffer();
 
       private Symbol symbol(int type) {
