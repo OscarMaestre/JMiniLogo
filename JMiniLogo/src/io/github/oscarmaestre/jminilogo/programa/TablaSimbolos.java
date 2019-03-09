@@ -24,21 +24,30 @@ public class TablaSimbolos {
         return valor;
     }
     
+    public Integer getValor(Parametro p) throws VariableNoExisteException{
+        if (!p.isEsSimbolico()){
+            Integer valor=p.getValor();
+            if (p.isNegativo()){
+                return -valor;
+            } else {
+                return valor;
+            }
+        }
+        String clave=p.getNombre();
+        Integer valor=tabla.get(clave);
+        if (valor==null){
+            VariableNoExisteException e=new VariableNoExisteException(clave);
+            throw e;
+        }
+        return valor;
+    }
+    
+    
     public void imprimir(){
         Set<String> claves = tabla.keySet();
         for (String clave : claves){
             Integer valor=tabla.get(clave);
             System.out.println("\t"+clave+":"+valor);
         }
-    }
-    
-    public Integer getValor(Parametro p) throws VariableNoExisteException{
-        if (!p.isEsSimbolico()){
-            return p.getValor();
-        }
-        String clave=p.getNombre();
-        return getValor(clave);
-    }
-    
-    
+    } 
 }

@@ -68,12 +68,12 @@ public class AntoParser extends Parser  {
     @Override
     public void anotarParam1(Parametro p ){
         this.parametro1=p;
-        System.out.println("Anotado parametro 1");
+        //System.out.println("Anotado parametro 1");
     }
     @Override
     public void anotarParam2(Parametro p ){
         this.parametro2=p;
-        System.out.println("Anotado parametro 2");
+        //System.out.println("Anotado parametro 2");
     }
     
 
@@ -100,7 +100,7 @@ public class AntoParser extends Parser  {
     }
     @Override
     public void anadirSentenciaAvanza(String puntos){
-        System.out.println("Anadiendo avance:"+puntos.toString());
+        //System.out.println("Anadiendo avance:"+puntos.toString());
         Sentencia sentencia=new SentenciaAvanza(new Integer(puntos));
         programa.anadirSentencia ( sentencia );
     }
@@ -117,7 +117,7 @@ public class AntoParser extends Parser  {
     
     @Override
     public void anadirSentenciaGira(String puntos){
-        System.out.println("Anadiendo giro:"+puntos.toString());
+        //System.out.println("Anadiendo giro:"+puntos.toString());
         Sentencia sentencia=new SentenciaGira(new Integer(puntos));
         programa.anadirSentencia ( sentencia );
     }
@@ -180,7 +180,7 @@ public class AntoParser extends Parser  {
     @Override
     public void anotarSigno(String signo) {
         this.signo=signo;
-        System.out.println("anotado signo "+signo);
+        //System.out.println("anotado signo "+signo);
     }
 
     @Override
@@ -194,10 +194,10 @@ public class AntoParser extends Parser  {
     @Override
     public void cerrarAsignacion() throws Exception {
         System.out.println("Cerrando..");
-        System.out.println(this.variableDestino);
-        System.out.println(this.parametro1);
-        System.out.println(this.signo);
-        System.out.println(this.parametro2);
+        System.out.println("\tVar destino:"+this.variableDestino);
+        System.out.println("\tParam 1:"+this.parametro1);
+        System.out.println("\tSigno:  "+this.signo);
+        System.out.println("\tParam 2:"+this.parametro2);
         
         if ((this.signo==null) && (this.parametro2==null)){
             SentenciaAsignacion s=new SentenciaAsignacion(this.variableDestino, this.parametro1);

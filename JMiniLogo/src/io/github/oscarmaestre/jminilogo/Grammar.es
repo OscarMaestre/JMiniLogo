@@ -69,10 +69,10 @@ scan with {: return s.next_token(); :};
 terminal            ROJO, NEGRO, AZUL, VERDE, CYAN, MAGENTA, AMARILLO, BLANCO;
 terminal            String IDENTIFICADOR;
 terminal            PARENIZQ, PARENDER;
-terminal            SUMA;
-terminal            RESTA;
-terminal            MULTIPLICACION;
-terminal            DIVISION;
+terminal            String SUMA;
+terminal            String RESTA;
+terminal            String MULTIPLICACION;
+terminal            String DIVISION;
 terminal            IGUAL;
 terminal            PROCEDIMIENTO, COMA, EJECUTAR;
 terminal            SUBELAPIZ, BAJALAPIZ, AVANZA, GIRA, PUNTOCOMA, ESPACIO, REPETIR, LLAVEABIERTA, LLAVECERRADA;
@@ -81,7 +81,9 @@ terminal            String ENTERO;
 non terminal            lista_sentencias;
 non terminal            subir, bajar, avanzar, girar, repetir, color, procedimiento;
 non terminal            sentencia, final_sentencia, lista_parametros;
-non terminal            asignacion, expresion, signo, operando1, operando2;
+non terminal            asignacion, expresion;
+non terminal Parametro  operando;
+non terminal String     signo;
 non terminal            valores_pasados_a_procedimiento, parametro, ejecutar_proc, lista_valores_pasados ;
 
 lista_sentencias ::= sentencia final_sentencia | sentencia final_sentencia lista_sentencias ;
@@ -118,44 +120,57 @@ color ::= ROJO {:  this.parser.anadirSentenciaColor(
 
 
 asignacion ::= IDENTIFICADOR:id {: this.parser.anotarVariableResultado(id); :}
-                IGUAL expresion:e
+                IGUAL expresion
                 {:
                     this.parser.cerrarAsignacion();
                 :} ;
-expresion ::= operando1:op | operando1:op signo:s  operando2:op2;
+expresion ::= operando:op {:this.parser.anotarParam1(op);:} | 
+                operando:op1 {: this.parser.anotarParam1(op1); System.out.println("Param 1:"+op1); :}
+                 signo:s {:this.parser.anotarSigno(s); :}
+                operando:op2{: this.parser.anotarParam2(op2); System.out.println("Param 2:"+op2);:};
                 
 
-operando1 ::= IDENTIFICADOR:id {: 
+operando ::= IDENTIFICADOR:id 
+                {:
                     boolean esSimbolico=true;
                     Parametro p=new Parametro(esSimbolico);
                     p.setNombre(id);
-                    this.parser.anotarParam1(p);
+                    System.out.println("Encontrado id "+id);
+                    RESULT = p;
                 :}
-                | ENTERO:entero {:
-                    boolean esSimbolico=false;
-                    Parametro p=new Parametro(esSimbolico);
-                    p.setValor(entero);
-                    this.parser.anotarParam1(p);
-                :};
-
-operando2 ::= IDENTIFICADOR:id {: 
+                | RESTA IDENTIFICADOR:id 
+                {:
                     boolean esSimbolico=true;
                     Parametro p=new Parametro(esSimbolico);
                     p.setNombre(id);
-                    this.parser.anotarParam2(p);
+                    p.setNegativo(true);
+                    System.out.println("Encontrado id negativo "+id);
+                    RESULT = p;
                 :}
-                | ENTERO:entero {:
+                | ENTERO:entero
+                {:
                     boolean esSimbolico=false;
                     Parametro p=new Parametro(esSimbolico);
                     p.setValor(entero);
-                    this.parser.anotarParam2(p);
-                :};
+                    RESULT = p;
+                :}
+                | RESTA ENTERO:enteroneg
+                {:
+                    boolean esSimbolico=false;
+                    Parametro p=new Parametro(esSimbolico);
+                    p.setNegativo(true);
+                    p.setValor(enteroneg);
+                    System.out.println("Encontrado num negativo "+enteroneg);
+                    RESULT = p;
+                :}
+                ;
 
 
-signo ::=   SUMA            {: this.parser.anotarSigno("+"); :}| 
-            RESTA           {: this.parser.anotarSigno("-"); :}| 
-            MULTIPLICACION  {: this.parser.anotarSigno("*"); :}| 
-            DIVISION        {: this.parser.anotarSigno("/"); :}
+
+signo ::=   SUMA:s           {: RESULT=s; :}| 
+            RESTA:s          {: RESULT=s; :}| 
+            MULTIPLICACION:s {: RESULT=s; :}| 
+            DIVISION:s       {: RESULT=s; :}
             ;
 
 
@@ -176,6 +191,7 @@ avanzar::=  AVANZA ESPACIO ENTERO:entero {:
             :} | AVANZA ESPACIO IDENTIFICADOR:id{: 
                 this.parser.anadirSentenciaAvanzaConVariable(id);
             :} ;
+
 
 
 girar ::=   GIRA  ESPACIO ENTERO:entero {: 
@@ -233,11 +249,27 @@ parametro ::= IDENTIFICADOR:id
                     p.setNombre(id);
                     this.parser.anadirParametroPasado(p);
                 :}
+                | RESTA IDENTIFICADOR:id 
+                {:
+                    boolean esSimbolico=true;
+                    Parametro p=new Parametro(esSimbolico);
+                    p.setNombre(id);
+                    p.setNegativo(true);
+                    this.parser.anadirParametroPasado(p);
+                :}
+                |
                 | ENTERO:entero
                 {:
                     boolean esSimbolico=false;
                     Parametro p=new Parametro(esSimbolico);
                     p.setValor(entero);
+                    this.parser.anadirParametroPasado(p);
+                :}
+                | RESTA ENTERO:enteroneg
+                {:
+                    boolean esSimbolico=false;
+                    Parametro p=new Parametro(esSimbolico);
+                    p.setNegativo(true);
                     this.parser.anadirParametroPasado(p);
                 :}
                 ;

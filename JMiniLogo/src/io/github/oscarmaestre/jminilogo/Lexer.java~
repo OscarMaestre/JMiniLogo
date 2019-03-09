@@ -777,22 +777,22 @@ public class Lexer implements java_cup.runtime.Scanner, sym {
             // fall through
           case 37: break;
           case 7: 
-            { return symbol (sym.SUMA);
+            { return symbol (sym.SUMA,           new String( yytext() ) );
             } 
             // fall through
           case 38: break;
           case 8: 
-            { return symbol (sym.RESTA);
+            { return symbol (sym.RESTA,          new String( yytext() ) );
             } 
             // fall through
           case 39: break;
           case 9: 
-            { return symbol (sym.MULTIPLICACION);
+            { return symbol (sym.MULTIPLICACION, new String( yytext() ) );
             } 
             // fall through
           case 40: break;
           case 10: 
-            { return symbol (sym.DIVISION);
+            { return symbol (sym.DIVISION,       new String( yytext() ) );
             } 
             // fall through
           case 41: break;

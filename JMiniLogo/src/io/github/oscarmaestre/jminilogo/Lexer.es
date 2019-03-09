@@ -66,10 +66,10 @@ Procedimiento   = "procedimiento"{EspacioEnBlanco}
 %%
 
 
-{Suma}                      { return symbol (sym.SUMA); }
-{Resta}                     { return symbol (sym.RESTA); }
-{Multiplicacion}            { return symbol (sym.MULTIPLICACION); }
-{Division}                  { return symbol (sym.DIVISION); }
+{Suma}                      { return symbol (sym.SUMA,           new String( yytext() ) ); }
+{Resta}                     { return symbol (sym.RESTA,          new String( yytext() ) ); }
+{Multiplicacion}            { return symbol (sym.MULTIPLICACION, new String( yytext() ) ); }
+{Division}                  { return symbol (sym.DIVISION,       new String( yytext() ) ); }
 {SignoIgual}                { return symbol (sym.IGUAL); }
 
 

@@ -53,7 +53,9 @@ public class PruebaScanner {
 
     
     public void pruebaEstandar(String msg, String prg) {
-        System.out.println(msg);
+        StackTraceElement[] pila = Thread.currentThread().getStackTrace();
+        StackTraceElement metodo = pila[2];
+        System.out.println("\n------------:"+metodo.getMethodName()+"------------");
         System.out.println(prg);
         sr=new StringReader(prg);
         l=new Lexer(sr);
@@ -75,6 +77,7 @@ public class PruebaScanner {
         catch (Exception ex) {
             Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println("------------ fin de "+metodo.getMethodName()+"------------");
     }
     
     @Test
@@ -180,6 +183,18 @@ public class PruebaScanner {
                 + "repetir 5{"
                     + "avanza i; gira 20; i=i-20;"
                 + "};";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    @Test
+    public void asignacionNegativa(){
+        String programa="i=-20;";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    @Test
+    public void restaNegativa(){
+        String programa="j=-30--20;";
         this.pruebaEstandar(programa, programa);
     }
     

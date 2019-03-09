@@ -6,10 +6,20 @@ public class Parametro {
     private boolean esSimbolico;
     private String nombre;
     private Integer valor;
-    
+    private boolean negativo;
     public Parametro(boolean esSimbolico) {
         this.esSimbolico = esSimbolico;
+        this.negativo=false;
     }
+
+    public boolean isNegativo() {
+        return negativo;
+    }
+
+    public void setNegativo(boolean negativo) {
+        this.negativo = negativo;
+    }
+    
 
     public boolean isEsSimbolico() {
         return esSimbolico;
@@ -31,6 +41,9 @@ public class Parametro {
         Integer i=Integer.parseInt(cad);
         this.valor=i;
     }
+    
+    
+    
     
     public String toString(){
         if (this.esSimbolico){
