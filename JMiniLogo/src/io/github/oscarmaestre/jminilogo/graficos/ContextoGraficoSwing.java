@@ -37,8 +37,9 @@ public class ContextoGraficoSwing implements IContextoEjecucion{
 
     @Override
     public void avanza(int pasos) {
-        int nueva_x=x+(int) (pasos * Math.cos(this.grados));
-        int nueva_y=y+(int) (pasos * Math.sin(this.grados));
+        double radianes=this.grados*2*Math.PI/360;
+        int nueva_x=x+(int) (pasos * Math.cos(radianes));
+        int nueva_y=y+(int) (pasos * Math.sin(radianes));
         System.out.print("Yendo de ("+x+", "+y+")");
         System.out.print(" a  ("+nueva_x+", "+nueva_y+")");
         System.out.println("");

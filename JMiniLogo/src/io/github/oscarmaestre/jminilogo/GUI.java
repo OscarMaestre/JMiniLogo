@@ -29,6 +29,7 @@ public class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         menuBarBarraMenus = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         menuNuevo = new javax.swing.JMenuItem();
@@ -41,11 +42,16 @@ public class GUI extends javax.swing.JFrame {
         menuCopiar = new javax.swing.JMenuItem();
         menuCambiarFuente = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        menuEjemplos = new javax.swing.JMenu();
+        menuEjemplosCuadrado = new javax.swing.JMenuItem();
+        menuEjemplosEspiral = new javax.swing.JMenuItem();
         menuAyuda = new javax.swing.JMenu();
         menuMostrarAyuda = new javax.swing.JMenuItem();
         menuAcercaDe = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
+
+        jMenuItem2.setText("jMenuItem2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -86,6 +92,16 @@ public class GUI extends javax.swing.JFrame {
 
         menuBarBarraMenus.add(menuEdicion);
 
+        menuEjemplos.setText("Ejemplos");
+
+        menuEjemplosCuadrado.setText("Cuadrado");
+        menuEjemplos.add(menuEjemplosCuadrado);
+
+        menuEjemplosEspiral.setText("Espiral");
+        menuEjemplos.add(menuEjemplosEspiral);
+
+        menuBarBarraMenus.add(menuEjemplos);
+
         menuAyuda.setText("Ayuda");
 
         menuMostrarAyuda.setText("Mostrar ayuda");
@@ -116,6 +132,7 @@ public class GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     protected javax.swing.JMenuItem jMenuItem4;
     protected javax.swing.JMenuItem menuAbrir;
     protected javax.swing.JMenuItem menuAcercaDe;
@@ -126,6 +143,9 @@ public class GUI extends javax.swing.JFrame {
     protected javax.swing.JMenuItem menuCopiar;
     private javax.swing.JMenuItem menuCortar;
     protected javax.swing.JMenu menuEdicion;
+    private javax.swing.JMenu menuEjemplos;
+    protected javax.swing.JMenuItem menuEjemplosCuadrado;
+    protected javax.swing.JMenuItem menuEjemplosEspiral;
     protected javax.swing.JMenuItem menuGuardar;
     protected javax.swing.JMenuItem menuGuardarComo;
     protected javax.swing.JMenuItem menuMostrarAyuda;

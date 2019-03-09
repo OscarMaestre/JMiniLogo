@@ -1,5 +1,6 @@
 package io.github.oscarmaestre.jminilogo.programa;
 
+import io.github.oscarmaestre.jminilogo.excepciones.CantidadParametrosInvalidaException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -30,7 +31,7 @@ public class SentenciaProcedimiento extends SentenciaCompuesta{
  
     
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) {
+    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) throws Exception {
         System.out.println("Iniciando ejecucion proc "+this.nombre);
         for (Sentencia s:programa){
             s.ejecutar(contexto, tablaSimbolos);

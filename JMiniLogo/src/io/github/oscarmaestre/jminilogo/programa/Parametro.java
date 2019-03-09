@@ -1,13 +1,16 @@
 package io.github.oscarmaestre.jminilogo.programa;
 
 public class Parametro {
-    boolean esSimbolico;
-    String nombre;
-    
-    Integer valor;
+    private boolean esSimbolico;
+    private String nombre;
+    private Integer valor;
     
     public Parametro(boolean esSimbolico) {
         this.esSimbolico = esSimbolico;
+    }
+
+    public boolean isEsSimbolico() {
+        return esSimbolico;
     }
     
     public String getNombre() {
@@ -33,6 +36,10 @@ public class Parametro {
         } else {
             return this.valor.toString();
         }
+    }
+
+    Integer getValor() {
+        return this.valor;
     }
     
     

@@ -6,6 +6,8 @@
 
 import io.github.oscarmaestre.jminilogo.Parser;
 import io.github.oscarmaestre.jminilogo.Lexer;
+import io.github.oscarmaestre.jminilogo.AntoParser;
+import io.github.oscarmaestre.jminilogo.excepciones.VariableNoExisteException;
 import io.github.oscarmaestre.jminilogo.graficos.ContextoConsola;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaCompuesta;
 import java.io.IOException;
@@ -53,7 +55,7 @@ public class PruebaScanner {
     public void subir() {
         sr=new StringReader("subelapiz;");
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
         } catch (Exception ex) {
@@ -65,7 +67,7 @@ public class PruebaScanner {
     public void bajalapiz() {
         sr=new StringReader("bajalapiz;");
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
         } catch (Exception ex) {
@@ -78,7 +80,7 @@ public class PruebaScanner {
         String programa="avanza 20;";
         sr=new StringReader(programa);
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
         } catch (Exception ex) {
@@ -92,7 +94,7 @@ public class PruebaScanner {
         String programa="gira     20;";
         sr=new StringReader(programa);
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
         } catch (Exception ex) {
@@ -106,7 +108,7 @@ public class PruebaScanner {
         String programa="avanza 20;gira 20;";
         sr=new StringReader(programa);
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
         } catch (Exception ex) {
@@ -121,7 +123,7 @@ public class PruebaScanner {
         String programa="avanza 199;\n   ";
         sr=new StringReader(programa);
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
         } catch (Exception ex) {
@@ -135,7 +137,7 @@ public class PruebaScanner {
         String programa="repetir 5{avanza 20;\n gira 20;};";
         sr=new StringReader(programa);
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
         } catch (Exception ex) {
@@ -148,7 +150,7 @@ public class PruebaScanner {
     public void programaSimple(){
         sr=new StringReader("     subelapiz   ;      ");
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
             SentenciaCompuesta s=p.getPrograma();
@@ -162,7 +164,7 @@ public class PruebaScanner {
         System.out.println("Negro");
         sr=new StringReader("negro;");
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
             //SentenciaCompuesta s=p.getPrograma();
@@ -175,7 +177,7 @@ public class PruebaScanner {
         System.out.println("Rojo");
         sr=new StringReader("rojo;");
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
             //SentenciaCompuesta s=p.getPrograma();
@@ -188,7 +190,7 @@ public class PruebaScanner {
         System.out.println("Azul");
         sr=new StringReader("azul   ;");
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
             //SentenciaCompuesta s=p.getPrograma();
@@ -202,7 +204,7 @@ public class PruebaScanner {
         System.out.println("Procedimiento");
         sr=new StringReader("procedimiento aaa (a, b) { rojo; negro; };  ejecutar aaa(3, 4);");
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
             SentenciaCompuesta s=p.getPrograma();
@@ -222,7 +224,7 @@ public class PruebaScanner {
         System.out.println("Procedimiento");
         sr=new StringReader("procedimiento aaa (a, b) { rojo; negro; };  ejecutar aaa(3, 4); ejecutar aaa(3, 4);");
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
             SentenciaCompuesta s=p.getPrograma();
@@ -237,12 +239,39 @@ public class PruebaScanner {
         }
     }
     
+    
+    @Test 
+    public void programaConPasoDeParametros() throws IOException{
+        System.out.println("Procedimiento con paso de parametros");
+        sr=new StringReader("procedimiento aaa (a, b) { rojo; avanza a; avanza b;  negro; };  i=2; ejecutar aaa(i, 4); ejecutar aaa(13, 14);");
+        l=new Lexer(sr);
+        p=new AntoParser(l);
+        try {
+            p.parse();
+            SentenciaCompuesta s=p.getPrograma();
+            System.out.println(s.toString());
+            ContextoConsola c=new ContextoConsola();
+            System.out.println("Iniciamos ejecucion");
+            s.iniciarEjecucion(c);
+            System.out.println("Fin ejecucion");
+            
+        } 
+        catch (VariableNoExisteException e){
+            System.out.println("Variable "+e.getNombreVariable()+" no existe!!!");
+            e.printStackTrace();
+        }
+        catch (Exception ex) {
+            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
     @Test 
     public void asignacionSimple() throws IOException{
         System.out.println("i=3;");
         sr=new StringReader("i=3;");
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
             //SentenciaCompuesta s=p.getPrograma();
@@ -255,7 +284,7 @@ public class PruebaScanner {
         System.out.println("i=-3;j=i;");
         sr=new StringReader("i=-3;j=i;");
         l=new Lexer(sr);
-        p=new Parser(l);
+        p=new AntoParser(l);
         try {
             p.parse();
             //SentenciaCompuesta s=p.getPrograma();

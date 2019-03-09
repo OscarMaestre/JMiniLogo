@@ -36,7 +36,8 @@ public class SwingGUI extends GUI implements ActionListener{
     private final String MENU_MOSTRAR_AYUDA     =   "Mostrar ayuda";
     private final String MENU_ACERCA_DE         =   "Acerca de";
     
-    
+    private final String MENU_EJEMPLO_CUADRADOS =   "Ejemplo cuadrados";
+    private final String MENU_EJEMPLO_ESPIRAL   =   "Ejemplo espiral";
     private final String BTN_EJECUTAR           =   "Ejecutar";
     
     public Container contenedor;
@@ -131,10 +132,15 @@ public class SwingGUI extends GUI implements ActionListener{
         this.menuGuardarComo.addActionListener(this);
         this.menuSalir.addActionListener(this);
         this.btnEjecutar.addActionListener(this);
+        this.menuEjemplosEspiral.addActionListener(this);
+        this.menuEjemplosCuadrado.addActionListener(this);
         this.btnEjecutar.setActionCommand(this.BTN_EJECUTAR);
+        this.menuEjemplosCuadrado.setActionCommand(this.MENU_EJEMPLO_CUADRADOS);
+        this.menuEjemplosEspiral.setActionCommand(this.MENU_EJEMPLO_ESPIRAL);
         System.out.println(this.menuAbrir);
-        System.out.println("instaladors");
+        
     }
+    
     public JFrame getUI(){
         
         double[] pesosColumnas={10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
@@ -167,7 +173,7 @@ public class SwingGUI extends GUI implements ActionListener{
     
     private void ejecutarPrograma(){
         
-        
+        this.borrarPantalla();
         Graphics2D contextoGrafico=(Graphics2D) this.panelDibujo.getGraphics();
         ContextoGraficoSwing contextoSwing;
         int x_inicial=this.panelDibujo.getWidth()/2;
@@ -178,13 +184,13 @@ public class SwingGUI extends GUI implements ActionListener{
         String programa=this.txtAreaPrograma.getText();
         StringReader sr=new StringReader(programa);
         Lexer l=new Lexer(sr);
-        Parser p=new Parser(l);
+        Parser p=new AntoParser(l);
         try {
             p.parse();
             SentenciaCompuesta s=p.getPrograma();
             s.setDebug(true);
             System.out.println("Esta desactivada la ejecución en Swing");
-            //s.ejecutar(contextoSwing);
+            s.iniciarEjecucion(contextoSwing);
             
             System.out.println("Programa ejecutado");
             System.out.println(s.toString());
@@ -238,5 +244,54 @@ public class SwingGUI extends GUI implements ActionListener{
             System.out.println("Ejecutando todo");
             this.ejecutarPrograma();
         }
+        if (comando.equals(this.MENU_EJEMPLO_CUADRADOS)){
+            this.cargarEjemploCuadrados();
+        }
+        if (comando.equals(this.MENU_EJEMPLO_ESPIRAL)){
+            this.cargarEjemploEspiral();
+        }
+    }
+    public void borrarPantalla(){
+        Graphics2D contextoGrafico=(Graphics2D) this.panelDibujo.getGraphics();
+        contextoGrafico.setColor(contextoGrafico.getBackground());
+        contextoGrafico.fillRect(0, 0, panelDibujo.getWidth(), panelDibujo.getHeight());
+        this.panelDibujo.paintComponents(contextoGrafico);
+    }
+    private void cargarEjemploCuadrados() {
+        String programa="procedimiento cuadrado ( lado ){\n" +
+            "	bajalapiz;\n" +
+            "	repetir 4{\n" +
+            "		avanza lado;\n" +
+            "		gira 90;\n" +
+            "	};\n" +
+            "	subelapiz;\n" +
+            "};\n" +
+            "\n" +
+            "procedimiento columnacuadrados(numcuadrados, lado){\n" +
+            "	repetir 4{\n" +
+            "		ejecutar cuadrado(lado);\n" +
+            "		avanza lado;\n" +
+            "	};\n" +
+            "};\n" +
+            "\n" +
+            "ejecutar columnacuadrados(4, 20);\n" +
+            "gira -90;\n" +
+            "avanza -20;\n" +
+            "rojo;\n" +
+            "ejecutar columnacuadrados(4, 20);\n" +
+            "gira -90;\n" +
+            "avanza -20;\n" +
+            "azul;\n" +
+            "ejecutar columnacuadrados(4, 20);\n" +
+            "gira -90;\n" +
+            "avanza -20;\n" +
+            "verde;\n" +
+            "ejecutar columnacuadrados(4, 20);";
+        this.txtAreaPrograma.setText(programa);
+    }
+
+    private void cargarEjemploEspiral() {
+        String programa="";
+        this.txtAreaPrograma.setText(programa);
     }
 }

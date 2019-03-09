@@ -10,6 +10,7 @@ public class SentenciaAvanza extends Sentencia{
     }
     @Override
     public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) {
+        int numPasos;
         contexto.avanza(this.pasos);
         return true;
     }

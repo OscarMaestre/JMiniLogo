@@ -8,113 +8,69 @@ import java.util.HashMap;
 import java.util.ArrayList;
 parser code {:
     Lexer s;
-    SentenciaCompuesta programa;
-    Stack<SentenciaCompuesta> pila=new Stack<SentenciaCompuesta>();
-    HashMap<String, SentenciaProcedimiento> procedimientos;
-    ArrayList<String> listaParametros;
-    ArrayList<Parametro> parametrosPasados;
     public Parser(Lexer scanner){
         this.s=scanner;
-        programa=new SentenciaCompuesta();
-        procedimientos=new HashMap<>();
     }
-    public SentenciaProcedimiento getProcedimiento(String nombre){
-        return procedimientos.get(nombre);
-    }
-    public void crearNuevaListaParametros(){
-        this.listaParametros=new ArrayList<>();
-    }
-    public void anadirParametro(String parametro){
-        this.listaParametros.add(parametro);
-    }
-
-    public void crearNuevaListaParametrosPasados(){
-        this.parametrosPasados=new ArrayList<>();
-    }
-    public void anadirParametroPasado(Parametro parametro){
-        this.parametrosPasados.add(parametro);
-    }
+    public abstract SentenciaProcedimiento getProcedimiento(String nombre);
     
-    public Integer getValor(String simbolo) throws BadStringOperationException{
-        return programa.getValor(simbolo);
-    }
-    public void setValor(String simbolo, Integer valor){
-        this.programa.asignarValor(simbolo, valor);
-    }
-    public void setValor(String simbolo, String valor){
-        Integer iValor=Integer.parseInt(valor);
-        this.programa.asignarValor(simbolo, iValor);
-    }
-    public void setValor(String simbolo, Object valor){
-        String strValor=valor.toString();
-        Integer iValor=Integer.parseInt(strValor);
-        this.programa.asignarValor(simbolo, iValor);
-    }
-
+    public abstract void crearNuevaListaParametros();
     
-    public void anadirSentenciaSubeLapiz(){
-        Sentencia sentencia=new SentenciaSubeLapiz();
-        programa.anadirSentencia ( sentencia );
-    }
-    public void anadirSentenciaBajaLapiz(){
-        Sentencia sentencia=new SentenciaBajaLapiz();
-        programa.anadirSentencia ( sentencia );
-    }
-    public void anadirSentenciaAvanza(String puntos){
-        System.out.println("Anadiendo avance:"+puntos.toString());
-        Sentencia sentencia=new SentenciaAvanza(new Integer(puntos));
-        programa.anadirSentencia ( sentencia );
-    }
-    public void anadirSentenciaGira(String puntos){
-        System.out.println("Anadiendo giro:"+puntos.toString());
-        Sentencia sentencia=new SentenciaGira(new Integer(puntos));
-        programa.anadirSentencia ( sentencia );
-    }
-    public void anadirSentenciaRepetir(String veces){
-        
-        
-        SentenciaRepetir sentenciaRepetir=new SentenciaRepetir(Integer.parseInt(veces));
-        programa.anadirSentencia(sentenciaRepetir);
-        pila.push ( programa );
-        programa=new SentenciaCompuesta();
-    }
+    public abstract void anadirParametro(String parametro);
     
-    public void anadirSentenciaProcedimiento(SentenciaProcedimiento sentenciaProcedimiento){
-        this.procedimientos.put(sentenciaProcedimiento.getNombre(), sentenciaProcedimiento);
-        //programa.anadirSentencia(sentenciaProcedimiento);
-        pila.push ( programa );
-        programa=sentenciaProcedimiento;
-    }
-    public void terminarSentenciaProcedimiento(){
-        SentenciaCompuesta programaAnterior=pila.pop();
-        /*SentenciaProcedimiento sentenciaProcedimiento=(SentenciaProcedimiento)
-                    programaAnterior.getUltimaSentencia();*/
+    public abstract void anotarVariableResultado(String variable);
+    
+    public abstract void anotarParam1(Parametro p );
+    
+    public abstract void anotarParam2(Parametro p );
+    
+    public abstract String sumar(Object o1, Object o2);
 
-        //sentenciaProcedimiento.setCuerpoProcedimiento( programa );
-        this.programa = programaAnterior;
-    }
+    public abstract void crearNuevaListaParametrosPasados();
+    
+    public abstract void anadirParametroPasado(Parametro parametro);
+    
+    public abstract Integer getValor(String simbolo) throws BadStringOperationException;
+    
+    public abstract void setValor(String simbolo, Integer valor);
+    
+    public abstract void setValor(String simbolo, String valor);
+    
+    public abstract void setValor(String simbolo, Object valor);
+    
+    public abstract void anadirSentenciaSubeLapiz();
+    
+    public abstract void anadirSentenciaBajaLapiz();
+    
+    public abstract void anadirSentenciaAvanza(String puntos);
+    
+    public abstract void anadirSentenciaAvanzaConVariable(String nombreVariable);
+    
+    public abstract void anadirSentenciaGiraConVariable(String nombreVariable);
+    
+    public abstract void anadirSentenciaGira(String puntos);
+    
+    public abstract void anadirSentenciaRepetir(String veces);
+    
+    public abstract void anadirSentenciaProcedimiento(SentenciaProcedimiento sentenciaProcedimiento);
+    
+    public abstract void terminarSentenciaProcedimiento();
 
-    public void anadirSentenciaEjecutar(SentenciaEjecutar s){
-        s.setParametros (this.parametrosPasados);
-        programa.anadirSentencia(s);
-    }
+    public abstract void anadirSentenciaEjecutar(SentenciaEjecutar s);
 
-    public void anadirSentenciaColor(Color color){
-        SentenciaColor sentenciaColor = new SentenciaColor(color);
-        programa.anadirSentencia(sentenciaColor);
-    }
-    public void terminarSentenciaRepetir(){
-        SentenciaCompuesta cuerpoRepetir = programa;
-        SentenciaCompuesta programaAnterior=pila.pop();
-        SentenciaRepetir sentenciaRepetir=(SentenciaRepetir)programaAnterior.getUltimaSentencia();
+    public abstract void anadirSentenciaColor(Color color);
+    
+    public abstract void terminarSentenciaRepetir();
 
-        sentenciaRepetir.setSentenciaCompuesta( cuerpoRepetir );
-        this.programa = programaAnterior;
-    }
+    public abstract ArrayList<String> getListaParametros() ;
    
-    public SentenciaCompuesta getPrograma(){
-        return programa;
-    }
+    public abstract SentenciaCompuesta getPrograma();
+
+    public abstract void anadirSentenciaAsignacionSimple(String variable, String entero);
+
+    public abstract void anadirSentenciaAsignacionConVariable(String variableIzq, String variableDer);
+
+
+    
 :}
 
 
@@ -134,7 +90,7 @@ terminal            String ENTERO;
 non terminal            lista_sentencias;
 non terminal            subir, bajar, avanzar, girar, repetir, color, procedimiento;
 non terminal            sentencia, final_sentencia, lista_parametros;
-non terminal            asignacion, expresion_matematica_simple;
+non terminal            asignacion, expresion_matematica_simple, operando;
 non terminal            valores_pasados_a_procedimiento, parametro, ejecutar_proc, lista_valores_pasados ;
 
 
@@ -148,7 +104,7 @@ sentencia ::= subir  | bajar | avanzar | girar | repetir | color | procedimiento
 
 
 color ::= ROJO {:  this.parser.anadirSentenciaColor(
-                FabricaColores.getColorSpectrum(FabricaColores.ZX_SPECTRUM_CYAN)
+                FabricaColores.getColorSpectrum(FabricaColores.ZX_SPECTRUM_RED)
                 ); :}|  
           NEGRO {:  this.parser.anadirSentenciaColor(
                 FabricaColores.getColorSpectrum(FabricaColores.ZX_SPECTRUM_BLACK)
@@ -173,12 +129,14 @@ color ::= ROJO {:  this.parser.anadirSentenciaColor(
                 ); :} ;
 
 
-asignacion ::= IDENTIFICADOR:id IGUAL expresion_matematica_simple:entero 
-                {:this.parser.setValor(id, entero); System.out.println(id+"<-"+entero);:};
+asignacion ::= IDENTIFICADOR:id IGUAL ENTERO:entero 
+                {:
+                    this.parser.anadirSentenciaAsignacionSimple(id, entero);
+                :};
 
-expresion_matematica_simple ::= ENTERO:entero {: RESULT=entero; :} |
-                IDENTIFICADOR:id {: RESULT = this.parser.getValor(id);
-                System.out.println("Tabla tiene el valor "+RESULT+" para el simbolo:"+id); :};
+expresion_matematica_simple ::= operando:op {: RESULT=op; :} ;
+
+operando    ::= ENTERO:entero {:RESULT = entero; :} | IDENTIFICADOR:id {: RESULT=id; :};
 
 subir ::=   SUBELAPIZ {: 
                 System.out.println("Subiendo");
@@ -193,12 +151,16 @@ bajar ::=   BAJALAPIZ {:
 
 avanzar::=  AVANZA ESPACIO ENTERO:entero {: 
                 this.parser.anadirSentenciaAvanza(entero);
+            :} | AVANZA ESPACIO IDENTIFICADOR:id{: 
+                this.parser.anadirSentenciaAvanzaConVariable(id);
             :} ;
 
 
 girar ::=   GIRA  ESPACIO ENTERO:entero {: 
                 this.parser.anadirSentenciaGira(entero);
-            :} ;
+            :} | GIRA ESPACIO IDENTIFICADOR:id {:
+                this.parser.anadirSentenciaGiraConVariable(id);
+            :};
 
 
 repetir::= REPETIR ESPACIO ENTERO:entero {:
@@ -214,7 +176,7 @@ procedimiento ::= PROCEDIMIENTO IDENTIFICADOR:id
                 PARENIZQ {: System.out.println("Proc "+id); :} lista_parametros PARENDER
                 {: 
                     SentenciaProcedimiento s=new SentenciaProcedimiento(id); 
-                    s.setNombresParametros(this.parser.listaParametros); 
+                    s.setNombresParametros(this.parser.getListaParametros()); 
                     this.parser.anadirSentenciaProcedimiento (s);
                 :}
                 LLAVEABIERTA {:System.out.println("Incluyendo sentencias en proc"); :}

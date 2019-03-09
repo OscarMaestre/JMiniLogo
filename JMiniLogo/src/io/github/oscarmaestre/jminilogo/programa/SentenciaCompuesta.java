@@ -3,7 +3,9 @@ package io.github.oscarmaestre.jminilogo.programa;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 import javax.management.BadStringOperationException;
 
 public class SentenciaCompuesta extends Sentencia{
@@ -27,6 +29,18 @@ public class SentenciaCompuesta extends Sentencia{
      */
     public void setDebug(boolean debug) {
         this.debug = debug;
+    }
+
+    public HashMap<String, Integer> getTablaSimbolos() {
+        return tablaSimbolos;
+    }
+    
+    public void imprimirTablaSimbolos(){
+        Set<String> claves = tablaSimbolos.keySet();
+        for (String clave : claves){
+            Integer valor=tablaSimbolos.get(clave);
+            System.out.println("\t"+clave+":"+valor);
+        }
     }
 
     private transient final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
@@ -62,8 +76,12 @@ public class SentenciaCompuesta extends Sentencia{
     public void borrarSentencia(Sentencia s){
         this.programa.remove(s);
     }
+    public boolean iniciarEjecucion(IContextoEjecucion contexto) throws Exception{
+        return this.ejecutar(contexto, this.tablaSimbolos);
+    }
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos){
+    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) throws Exception{
+        
         if (this.isDebug()){
             System.out.println("Ejecutando programa...");
         }
