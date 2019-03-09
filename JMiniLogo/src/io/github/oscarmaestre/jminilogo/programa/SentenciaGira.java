@@ -18,4 +18,9 @@ public class SentenciaGira extends Sentencia{
     public String toString() {
         return " gira " + this.grados + ";";
     }
+
+    @Override
+    public void ejecutarPaso(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception {
+        this.ejecutar(contexto, tablaSimbolos);
+    }
 }

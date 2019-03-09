@@ -15,4 +15,9 @@ public class SentenciaSubeLapiz extends Sentencia{
         return true;
     }
 
+    @Override
+    public void ejecutarPaso(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception {
+        this.ejecutar(contexto, tablaSimbolos);
+    }
+
 }

@@ -33,7 +33,7 @@ parser code {:
     
     public abstract void anadirSentenciaGira(String puntos);
     
-    public abstract void anadirSentenciaRepetir(String veces);
+    public abstract void anadirSentenciaRepetir(Parametro veces);
     
     public abstract void anadirSentenciaProcedimiento(SentenciaProcedimiento sentenciaProcedimiento);
     
@@ -151,6 +151,7 @@ operando ::= IDENTIFICADOR:id
                 {:
                     boolean esSimbolico=false;
                     Parametro p=new Parametro(esSimbolico);
+                    System.out.println("Encontrado numero "+entero);
                     p.setValor(entero);
                     RESULT = p;
                 :}
@@ -201,8 +202,9 @@ girar ::=   GIRA  ESPACIO ENTERO:entero {:
             :};
 
 
-repetir::= REPETIR ESPACIO ENTERO:entero {:
-                this.parser.anadirSentenciaRepetir(entero);
+repetir::= REPETIR ESPACIO operando:veces {:
+                this.parser.anadirSentenciaRepetir(veces);
+                System.out.println("Repitiendo :"+veces);
             :}  LLAVEABIERTA lista_sentencias LLAVECERRADA {:
                 this.parser.terminarSentenciaRepetir();
             :};
@@ -227,7 +229,7 @@ lista_parametros ::= IDENTIFICADOR:id {: this.parser.anadirParametro(id); :} |
                     IDENTIFICADOR:id {: this.parser.anadirParametro(id);  :}COMA lista_parametros;
 
 
-ejecutar_proc   ::= EJECUTAR IDENTIFICADOR:id
+ejecutar_proc   ::= EJECUTAR ESPACIO IDENTIFICADOR:id
                     {:
                         
                         this.parser.crearNuevaListaParametrosPasados();

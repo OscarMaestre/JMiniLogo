@@ -12,7 +12,7 @@ import java_cup.runtime.Symbol;
 %column
 %state NO_IGNORAR_ESPACIOS  
 %{
-      boolean DEPURANDO = false;
+      boolean DEPURANDO = true;
       StringBuffer string = new StringBuffer();
 
       private Symbol symbol(int type) {
@@ -148,8 +148,16 @@ Procedimiento   = "procedimiento"{EspacioEnBlanco}
                         }
 {LlaveAbierta}          { return symbol (sym.LLAVEABIERTA); }
 {LlaveCerrada}          { return symbol (sym.LLAVECERRADA); }
-{ParenIzq}              { return symbol (sym.PARENIZQ); }
-{ParenDer}              { return symbol (sym.PARENDER); }
+{ParenIzq}              {   if (DEPURANDO){
+                                        System.out.println("Encontrado (");
+                                        System.out.println("Estabamos en el estado:"+yystate());
+                                    }
+                            return symbol (sym.PARENIZQ); }
+{ParenDer}              { if (DEPURANDO){
+                                        System.out.println("Encontrado )");
+                                        System.out.println("Estabamos en el estado:"+yystate());
+                                    }
+                            return symbol (sym.PARENDER); }
 {Coma}                  { return symbol (sym.COMA); }
 
 {PuntoComa}             { 
@@ -189,6 +197,7 @@ Procedimiento   = "procedimiento"{EspacioEnBlanco}
                                     if (DEPURANDO){
                                             System.out.println("Encontrando -EJECUTAR-");
                                         }
+                                        yybegin(NO_IGNORAR_ESPACIOS);
                                     return symbol (sym.EJECUTAR); 
                                 }
 {Identificador}                {
@@ -196,6 +205,7 @@ Procedimiento   = "procedimiento"{EspacioEnBlanco}
                                         System.out.println("Encontrado -IDENTIFICADOr-"+yytext());
                                         System.out.println("Estabamos en el estado:"+yystate());
                                     }
+                                    yybegin(YYINITIAL);
                                     return symbol (sym.IDENTIFICADOR, new String(yytext())); 
                                 }
 

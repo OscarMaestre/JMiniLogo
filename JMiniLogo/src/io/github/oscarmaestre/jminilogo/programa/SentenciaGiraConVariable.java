@@ -21,4 +21,9 @@ public class SentenciaGiraConVariable extends Sentencia{
     public String toString() {
         return "avanza " + this.nombreVariable;
     }
+
+    @Override
+    public void ejecutarPaso(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception {
+        this.ejecutar(contexto, tablaSimbolos);
+    }
 }

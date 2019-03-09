@@ -20,6 +20,7 @@ public abstract class Sentencia {
     
     public abstract boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos)
             throws Exception;
+    public abstract void ejecutarPaso(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception;
     @Override
     public abstract String toString();
 }

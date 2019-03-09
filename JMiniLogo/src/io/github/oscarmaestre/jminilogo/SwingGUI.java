@@ -1,7 +1,9 @@
 package io.github.oscarmaestre.jminilogo;
 
 import io.github.oscarmaestre.jminilogo.graficos.ContextoGraficoSwing;
+import io.github.oscarmaestre.jminilogo.programa.Sentencia;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaCompuesta;
+import io.github.oscarmaestre.jminilogo.programa.TablaSimbolos;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -39,6 +41,7 @@ public class SwingGUI extends GUI implements ActionListener{
     private final String MENU_EJEMPLO_CUADRADOS =   "Ejemplo cuadrados";
     private final String MENU_EJEMPLO_ESPIRAL   =   "Ejemplo espiral";
     private final String BTN_EJECUTAR           =   "Ejecutar";
+    private final String BTN_PASO_A_PASO        =   "Dar paso";
     
     public Container contenedor;
     public JTextArea txtAreaPrograma;
@@ -48,6 +51,13 @@ public class SwingGUI extends GUI implements ActionListener{
     public JPanel    panelDibujo;
     public JFrame    ventana;
     public boolean   depurandoGUI=false;
+    
+    SentenciaCompuesta  programa=null;
+    boolean             enModoPasoAPaso=false;
+    TablaSimbolos       tablaSimbolos=null;
+    Sentencia           siguienteSentencia=null;
+    ContextoGraficoSwing contextoSwing;
+    
     private void anadirBoton(String texto, int x, int y, int altura, int anchura,
             int expansion){
         JButton boton=new JButton(texto);
@@ -132,9 +142,11 @@ public class SwingGUI extends GUI implements ActionListener{
         this.menuGuardarComo.addActionListener(this);
         this.menuSalir.addActionListener(this);
         this.btnEjecutar.addActionListener(this);
+        this.btnPasoAPaso.addActionListener(this);
         this.menuEjemplosEspiral.addActionListener(this);
         this.menuEjemplosCuadrado.addActionListener(this);
         this.btnEjecutar.setActionCommand(this.BTN_EJECUTAR);
+        this.btnPasoAPaso.setActionCommand(this.BTN_PASO_A_PASO);
         this.menuEjemplosCuadrado.setActionCommand(this.MENU_EJEMPLO_CUADRADOS);
         this.menuEjemplosEspiral.setActionCommand(this.MENU_EJEMPLO_ESPIRAL);
         System.out.println(this.menuAbrir);
@@ -172,7 +184,7 @@ public class SwingGUI extends GUI implements ActionListener{
     }    
     
     private void ejecutarPrograma(){
-        
+        this.enModoPasoAPaso=false;
         this.borrarPantalla();
         Graphics2D contextoGrafico=(Graphics2D) this.panelDibujo.getGraphics();
         ContextoGraficoSwing contextoSwing;
@@ -241,8 +253,16 @@ public class SwingGUI extends GUI implements ActionListener{
         
         if (comando.equals(this.BTN_EJECUTAR)){
             this.txtAreaMensajes.setText("");
-            System.out.println("Ejecutando todo");
             this.ejecutarPrograma();
+        }
+        if (comando.equals(this.BTN_PASO_A_PASO)){
+            this.txtAreaMensajes.setText("Depurando...");
+            System.out.println("");
+            try {
+                this.darPaso();
+            } catch (Exception ex) {
+                Logger.getLogger(SwingGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if (comando.equals(this.MENU_EJEMPLO_CUADRADOS)){
             this.cargarEjemploCuadrados();
@@ -291,7 +311,54 @@ public class SwingGUI extends GUI implements ActionListener{
     }
 
     private void cargarEjemploEspiral() {
-        String programa="";
+        String programa="procedimiento espiral (longitud, pasos){\n" +
+            "	bajalapiz;\n" +
+            "	repetir pasos{\n" +
+            "		avanza longitud;\n" +
+            "		gira 90;\n" +
+            "		longitud=longitud-10;\n" +
+            "	};\n" +
+            "	subelapiz;\n" +
+            "};\n" +
+            "ejecutar espiral (200, 20);";
         this.txtAreaPrograma.setText(programa);
+    }
+
+    private void prepararPrograma(){
+        this.borrarPantalla();
+        Graphics2D contextoGrafico=(Graphics2D) this.panelDibujo.getGraphics();
+        
+        int x_inicial=this.panelDibujo.getWidth()/2;
+        int y_inicial=this.panelDibujo.getHeight()/2;
+        boolean lapizActivado=true;
+        int gradosIniciales=-90;
+        contextoSwing=new ContextoGraficoSwing(contextoGrafico, x_inicial, y_inicial, lapizActivado, gradosIniciales);
+        String programa=this.txtAreaPrograma.getText();
+        StringReader sr=new StringReader(programa);
+        Lexer l=new Lexer(sr);
+        Parser p=new AntoParser(l);
+        try {
+            p.parse();
+            SentenciaCompuesta s=p.getPrograma();
+            this.siguienteSentencia=s;
+            this.programa=s;
+            this.enModoPasoAPaso=true;
+            this.tablaSimbolos=s.getTablaSimbolos();
+            this.txtAreaMensajes.append("-->"+s);
+        } catch (Exception ex) {
+            this.txtAreaMensajes.setText(ex.toString());
+        }
+    }
+    private void darPaso() throws Exception {
+        if (!this.enModoPasoAPaso){
+            this.prepararPrograma();
+            System.out.println("Programa preparado");
+        }
+        System.out.println("Paso dado:"+siguienteSentencia);
+        this.siguienteSentencia.ejecutarPaso(contextoSwing, tablaSimbolos);
+        this.siguienteSentencia=this.programa.getSiguienteSentenciaParaEjecutar();
+        this.txtAreaMensajes.append("-->"+this.siguienteSentencia);
+        System.out.println(this.siguienteSentencia);
+        
     }
 }

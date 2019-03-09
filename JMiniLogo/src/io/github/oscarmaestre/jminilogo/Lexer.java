@@ -337,7 +337,7 @@ public class Lexer implements java_cup.runtime.Scanner, sym {
   private int zzFinalHighSurrogate = 0;
 
   /* user code: */
-      boolean DEPURANDO = false;
+      boolean DEPURANDO = true;
       StringBuffer string = new StringBuffer();
 
       private Symbol symbol(int type) {
@@ -744,6 +744,7 @@ public class Lexer implements java_cup.runtime.Scanner, sym {
                                         System.out.println("Encontrado -IDENTIFICADOr-"+yytext());
                                         System.out.println("Estabamos en el estado:"+yystate());
                                     }
+                                    yybegin(YYINITIAL);
                                     return symbol (sym.IDENTIFICADOR, new String(yytext()));
             } 
             // fall through
@@ -816,12 +817,20 @@ public class Lexer implements java_cup.runtime.Scanner, sym {
             // fall through
           case 44: break;
           case 14: 
-            { return symbol (sym.PARENIZQ);
+            { if (DEPURANDO){
+                                        System.out.println("Encontrado (");
+                                        System.out.println("Estabamos en el estado:"+yystate());
+                                    }
+                            return symbol (sym.PARENIZQ);
             } 
             // fall through
           case 45: break;
           case 15: 
-            { return symbol (sym.PARENDER);
+            { if (DEPURANDO){
+                                        System.out.println("Encontrado )");
+                                        System.out.println("Estabamos en el estado:"+yystate());
+                                    }
+                            return symbol (sym.PARENDER);
             } 
             // fall through
           case 46: break;
@@ -911,6 +920,7 @@ public class Lexer implements java_cup.runtime.Scanner, sym {
             { if (DEPURANDO){
                                             System.out.println("Encontrando -EJECUTAR-");
                                         }
+                                        yybegin(NO_IGNORAR_ESPACIOS);
                                     return symbol (sym.EJECUTAR);
             } 
             // fall through

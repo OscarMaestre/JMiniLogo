@@ -45,4 +45,9 @@ public class SentenciaAsignacionConMatematica extends Sentencia{
         String cad=MessageFormat.format("{0} = {1} {2} {3}", variableDestino, operando1, signo, operando2);
         return cad;
     }
+
+    @Override
+    public void ejecutarPaso(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception {
+        this.ejecutar(contexto, tablaSimbolos);
+    }
 }

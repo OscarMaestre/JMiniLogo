@@ -81,5 +81,10 @@ public class SentenciaEjecutar extends Sentencia {
         sb.append(" )");
         return sb.toString();
     }
+
+    @Override
+    public void ejecutarPaso(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception {
+        this.ejecutarPaso(contexto, tablaSimbolos);
+    }
     
 }

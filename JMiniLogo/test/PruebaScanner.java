@@ -176,13 +176,21 @@ public class PruebaScanner {
         String programa="i=3;j=i;";
         this.pruebaEstandar(programa, programa);
     }
-    
+    @Test
+    public void repetirConParametro(){
+        String programa="i=5; repetir i { rojo; };";
+        this.pruebaEstandar(programa, programa);
+    }
     @Test 
     public void espiral() throws IOException{
-        String programa="i=200;"
-                + "repetir 5{"
-                    + "avanza i; gira 20; i=i-20;"
-                + "};";
+        String programa="procedimiento espiral(inicial, pasos){\n" +
+            "	repetir pasos{\n" +
+            "		avanza inicial;\n" +
+            "		gira 90;\n" +
+            "		inicial=inicial-10;\n" +
+            "	};\n" +
+            "};\n" +
+            "rojo;ejecutar espiral (100, 10);";
         this.pruebaEstandar(programa, programa);
     }
     
@@ -194,7 +202,7 @@ public class PruebaScanner {
     
     @Test
     public void restaNegativa(){
-        String programa="j=-30--20;";
+        String programa="j=-30--20;i=-j;";
         this.pruebaEstandar(programa, programa);
     }
     

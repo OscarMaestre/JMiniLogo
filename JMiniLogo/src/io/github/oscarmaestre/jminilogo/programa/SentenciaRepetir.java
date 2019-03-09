@@ -1,20 +1,23 @@
 package io.github.oscarmaestre.jminilogo.programa;
 
+import io.github.oscarmaestre.jminilogo.excepciones.VariableNoExisteException;
 import java.util.HashMap;
 
 public class SentenciaRepetir extends Sentencia{
-    int veces;
+    Parametro veces;
     SentenciaCompuesta cuerpoRepetir;
-    public SentenciaRepetir(int veces) {
-        this.veces = veces;
+    
+    public SentenciaRepetir(Parametro veces) {
+        this.veces=veces;
     }
     public void setSentenciaCompuesta(SentenciaCompuesta cuerpo){
         this.cuerpoRepetir = cuerpo;
     }
     
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception {
-        for (int i=0; i<this.veces; i++){
+    public boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws VariableNoExisteException, Exception {
+        int max=tablaSimbolos.getValor(veces);
+        for (int i=0; i<max; i++){
             this.cuerpoRepetir.ejecutar(contexto, tablaSimbolos);
         }
         return true;
@@ -26,6 +29,11 @@ public class SentenciaRepetir extends Sentencia{
                 this.cuerpoRepetir.toString()+"\n}";
         return programa;
         
+    }
+
+    @Override
+    public void ejecutarPaso(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception {
+        cuerpoRepetir.ejecutarPaso(contexto, tablaSimbolos);
     }
 
 }

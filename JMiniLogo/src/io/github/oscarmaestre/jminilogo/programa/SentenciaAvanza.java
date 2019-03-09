@@ -18,4 +18,9 @@ public class SentenciaAvanza extends Sentencia{
         return " avanza " + this.pasos + ";";
     }
 
+    @Override
+    public void ejecutarPaso(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception {
+        this.ejecutarPaso(contexto, tablaSimbolos);
+    }
+
 }

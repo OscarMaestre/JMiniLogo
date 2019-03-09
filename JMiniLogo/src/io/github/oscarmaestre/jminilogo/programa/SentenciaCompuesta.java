@@ -9,6 +9,8 @@ import java.util.ArrayList;
 public class SentenciaCompuesta extends Sentencia{
     ArrayList<Sentencia> programa=new ArrayList<Sentencia>();
     TablaSimbolos tablaSimbolos=new TablaSimbolos();
+    Sentencia     proximaSentenciaAEjecutar=null;
+    int contadorDePrograma=0;
     protected boolean debug;
 
     /**
@@ -66,6 +68,17 @@ public class SentenciaCompuesta extends Sentencia{
     public boolean iniciarEjecucion(IContextoEjecucion contexto) throws Exception{
         return this.ejecutar(contexto, this.tablaSimbolos);
     }
+    public Sentencia iniciarEjecucionPasoAPaso(IContextoEjecucion contexto) throws Exception{
+        this.contadorDePrograma=0;
+        this.proximaSentenciaAEjecutar=this.programa.get(this.contadorDePrograma);
+        return this.proximaSentenciaAEjecutar;
+    }
+
+    public TablaSimbolos getTablaSimbolos() {
+        return tablaSimbolos;
+    }
+    
+    
     @Override
     public boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception{
         
@@ -82,6 +95,8 @@ public class SentenciaCompuesta extends Sentencia{
     }  
     
     
+    
+    
     @Override
     public String toString() {
         String resultado="";
@@ -89,6 +104,21 @@ public class SentenciaCompuesta extends Sentencia{
             resultado = resultado + s.toString()+"\n";
         }
         return resultado;
+    }
+    public Sentencia getSiguienteSentenciaParaEjecutar(){
+        System.out.println("Recuperando instruccion "+contadorDePrograma);
+        if (contadorDePrograma>=this.programa.size()){
+            return null;
+        }
+        Sentencia s= this.programa.get(contadorDePrograma);
+        return s;
+    }
+    @Override
+    public void ejecutarPaso(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception {
+        
+        Sentencia siguiente=this.getSiguienteSentenciaParaEjecutar();
+        siguiente.ejecutarPaso(contexto, tablaSimbolos);
+        this.contadorDePrograma++;
     }
 
 }

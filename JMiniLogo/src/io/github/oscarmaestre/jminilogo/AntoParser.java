@@ -121,9 +121,11 @@ public class AntoParser extends Parser  {
         Sentencia sentencia=new SentenciaGira(new Integer(puntos));
         programa.anadirSentencia ( sentencia );
     }
-    @Override
-    public void anadirSentenciaRepetir(String veces){
-        SentenciaRepetir sentenciaRepetir=new SentenciaRepetir(Integer.parseInt(veces));
+    
+   
+    
+    public void anadirSentenciaRepetir(Parametro veces){
+        SentenciaRepetir sentenciaRepetir=new SentenciaRepetir(veces);
         programa.anadirSentencia(sentenciaRepetir);
         pila.push ( programa );
         programa=new SentenciaCompuesta();

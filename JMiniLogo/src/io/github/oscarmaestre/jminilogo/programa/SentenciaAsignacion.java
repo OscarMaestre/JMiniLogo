@@ -25,4 +25,11 @@ public class SentenciaAsignacion extends Sentencia{
     public String toString() {
         return this.variable+"="+this.valorDerecho.toString();
     }
+
+    @Override
+    public void ejecutarPaso(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception {
+        this.ejecutar(contexto, tablaSimbolos);
+    }
+
+    
 }
