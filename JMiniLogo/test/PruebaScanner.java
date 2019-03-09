@@ -51,199 +51,11 @@ public class PruebaScanner {
     public void tearDown() {
     }
 
-    @Test
-    public void subir() {
-        sr=new StringReader("subelapiz;");
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
     
-    @Test
-    public void bajalapiz() {
-        sr=new StringReader("bajalapiz;");
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    @Test
-    public void avanza() {
-        String programa="avanza 20;";
-        sr=new StringReader(programa);
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-            fail("Fallo en avanza:\n"+programa);
-        }
-    }
-    
-    @Test
-    public void gira() {
-        String programa="gira     20;";
-        sr=new StringReader(programa);
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-            fail("Fallo en giro:\n"+programa);
-        }
-    }
-    
-    @Test
-    public void avanzagira() {
-        String programa="avanza 20;gira 20;";
-        sr=new StringReader(programa);
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-            fail("Error en secuencia de sentencias:\n"+programa);
-        }
-    }
-    
-    @Test
-    public void avanzagiraIncluyendoFinDeLinea() {
-        System.out.println("Probando con fines de linea");
-        String programa="avanza 199;\n   ";
-        sr=new StringReader(programa);
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-            fail("Error en secuencia de sentencias:\n"+programa);
-        }
-    }
-    
-    @Test
-    public void repetir() {
-        String programa="repetir 5{avanza 20;\n gira 20;};";
-        sr=new StringReader(programa);
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-            fail("Error en sentencia repetir:\n"+programa);
-        }
-    }
-    
-    @Test 
-    public void programaSimple(){
-        sr=new StringReader("     subelapiz   ;      ");
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-            SentenciaCompuesta s=p.getPrograma();
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    @Test 
-    public void programaNegro(){
-        System.out.println("Negro");
-        sr=new StringReader("negro;");
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-            //SentenciaCompuesta s=p.getPrograma();
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    @Test 
-    public void programaRojo(){
-        System.out.println("Rojo");
-        sr=new StringReader("rojo;");
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-            //SentenciaCompuesta s=p.getPrograma();
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    @Test 
-    public void programaAzul() throws IOException{
-        System.out.println("Azul");
-        sr=new StringReader("azul   ;");
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-            //SentenciaCompuesta s=p.getPrograma();
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    @Test 
-    public void programaConProcedimiento() throws IOException{
-        System.out.println("Procedimiento");
-        sr=new StringReader("procedimiento aaa (a, b) { rojo; negro; };  ejecutar aaa(3, 4);");
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-            SentenciaCompuesta s=p.getPrograma();
-            System.out.println(s.toString());
-            ContextoConsola c=new ContextoConsola();
-            System.out.println("Iniciamos ejecucion");
-            s.ejecutar(c, null);
-            System.out.println("Fin ejecucion");
-            
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    @Test 
-    public void programaConProcedimiento2Ejecutar() throws IOException{
-        System.out.println("Procedimiento");
-        sr=new StringReader("procedimiento aaa (a, b) { rojo; negro; };  ejecutar aaa(3, 4); ejecutar aaa(3, 4);");
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-            SentenciaCompuesta s=p.getPrograma();
-            System.out.println(s.toString());
-            ContextoConsola c=new ContextoConsola();
-            System.out.println("Iniciamos ejecucion");
-            s.ejecutar(c, null);
-            System.out.println("Fin ejecucion");
-            
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    
-    @Test 
-    public void programaConPasoDeParametros() throws IOException{
-        System.out.println("Procedimiento con paso de parametros");
-        sr=new StringReader("procedimiento aaa (a, b) { rojo; avanza a; avanza b;  negro; };  i=2; ejecutar aaa(i, 4); ejecutar aaa(13, 14);");
+    public void pruebaEstandar(String msg, String prg) {
+        System.out.println(msg);
+        System.out.println(prg);
+        sr=new StringReader(prg);
         l=new Lexer(sr);
         p=new AntoParser(l);
         try {
@@ -265,31 +77,110 @@ public class PruebaScanner {
         }
     }
     
+    @Test
+    public void subir() {
+        String prg="subelapiz;";
+        this.pruebaEstandar("Subiendo lapiz", prg);
+    }
+    
+    @Test
+    public void avanza() {
+        String programa="avanza 20;";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    @Test
+    public void gira() {
+        String programa="gira     20;";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    @Test
+    public void avanzagira() {
+        String programa="avanza 20;gira 20;";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    @Test
+    public void avanzagiraIncluyendoFinDeLinea() {
+        String programa="avanza 199;\n   ";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    @Test
+    public void repetir() {
+        String programa="repetir 5{avanza 20;\n gira 20;};";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    @Test 
+    public void programaSimple(){
+        String programa="     subelapiz   ;      ";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    @Test 
+    public void programaNegro(){
+        String programa="negro;";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    @Test 
+    public void programaRojo(){
+        String programa="rojo;";
+        this.pruebaEstandar(programa, programa);
+    }
+    @Test 
+    public void programaAzul() throws IOException{
+        String programa="azul   ;";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    @Test 
+    public void programaConProcedimiento() throws IOException{
+        String programa="procedimiento aaa (a, b) { rojo; negro; };  ejecutar aaa(3, 4);";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    @Test 
+    public void programaConProcedimiento2Ejecutar() throws IOException{
+        String programa="procedimiento aaa (a, b) { rojo; negro; };  ejecutar aaa(3, 4); ejecutar aaa(3, 4);";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    
+    @Test 
+    public void programaConPasoDeParametros() throws IOException{
+        String programa="procedimiento aaa (a, b) { rojo; avanza a; avanza b;  negro; };  i=2; c=i; ejecutar aaa(i, c); ejecutar aaa(13, 14);";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    @Test 
+    public void programaAsignacionesMatematicas() throws IOException{
+        String programa="i=2;j=i+44;";
+        this.pruebaEstandar(programa, programa);
+    }
+    
     
     @Test 
     public void asignacionSimple() throws IOException{
-        System.out.println("i=3;");
-        sr=new StringReader("i=3;");
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-            //SentenciaCompuesta s=p.getPrograma();
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String programa="i=3;";
+        this.pruebaEstandar(programa, programa);
     }
+    
     @Test 
     public void asignacionDoble() throws IOException{
-        System.out.println("i=-3;j=i;");
-        sr=new StringReader("i=-3;j=i;");
-        l=new Lexer(sr);
-        p=new AntoParser(l);
-        try {
-            p.parse();
-            //SentenciaCompuesta s=p.getPrograma();
-        } catch (Exception ex) {
-            Logger.getLogger(PruebaScanner.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String programa="i=3;j=i;";
+        this.pruebaEstandar(programa, programa);
     }
+    
+    @Test 
+    public void espiral() throws IOException{
+        String programa="i=200;"
+                + "repetir 5{"
+                    + "avanza i; gira 20; i=i-20;"
+                + "};";
+        this.pruebaEstandar(programa, programa);
+    }
+    
 }

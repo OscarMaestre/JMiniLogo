@@ -1,5 +1,7 @@
 package io.github.oscarmaestre.jminilogo.programa;
 
+import java.util.HashMap;
+
 public class Parametro {
     private boolean esSimbolico;
     private String nombre;
@@ -37,7 +39,6 @@ public class Parametro {
             return this.valor.toString();
         }
     }
-
     Integer getValor() {
         return this.valor;
     }

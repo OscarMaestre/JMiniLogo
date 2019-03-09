@@ -1,6 +1,7 @@
 package io.github.oscarmaestre.jminilogo.programa;
 
 import io.github.oscarmaestre.jminilogo.excepciones.CantidadParametrosInvalidaException;
+import io.github.oscarmaestre.jminilogo.excepciones.VariableNoExisteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -18,7 +19,7 @@ public class SentenciaEjecutar extends Sentencia {
         this.parametros=parametros;
     }
     
-    public HashMap<String, Integer> asignarParametros(HashMap<String, Integer> tablaSimbolos) throws CantidadParametrosInvalidaException{
+    public TablaSimbolos asignarParametros(TablaSimbolos tablaSimbolos) throws CantidadParametrosInvalidaException, VariableNoExisteException{
         
         ArrayList<String> parametrosDeclarados=this.procedimiento.nombresParametros;
         int numParametrosDeclarados=parametrosDeclarados.size();
@@ -32,21 +33,21 @@ public class SentenciaEjecutar extends Sentencia {
         ArrayList<Integer> valoresParaPasar=new ArrayList<>();
         for (Parametro p : parametros){
             if (p.isEsSimbolico()){
-                Integer valorVariable=tablaSimbolos.get(p.getNombre());
+                Integer valorVariable=tablaSimbolos.getValor(p.getNombre());
                 valoresParaPasar.add(valorVariable);
             } else {
                 valoresParaPasar.add(p.getValor());
             }
         }
         
-        HashMap<String, Integer> tablaSimbolosProcedimiento=new HashMap<>();
+        TablaSimbolos tablaSimbolosProcedimiento=new TablaSimbolos();
         /* Una vez que tenemos todos los valores podemos fabricar una nueva tabla de
         simbolos para el procedimiento */
         
         for (int i=0; i<parametros.size(); i++){
             String nombreParametro  =   parametrosDeclarados.get(i);
             Integer valor           =   valoresParaPasar.get(i);
-            tablaSimbolosProcedimiento.put(nombreParametro, valor);
+            tablaSimbolosProcedimiento.almacenar(nombreParametro, valor);
         }
         return tablaSimbolosProcedimiento;
     }
@@ -54,11 +55,11 @@ public class SentenciaEjecutar extends Sentencia {
   
     
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) throws Exception {
+    public boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception {
         try {
-            HashMap<String, Integer> nuevaTabla=this.asignarParametros(tablaSimbolos);
-            System.out.println("----Tabla de simbolos para el proc-----");
-            this.imprimirTablaSimbolos(tablaSimbolos);
+            TablaSimbolos nuevaTabla=this.asignarParametros(tablaSimbolos);
+            System.out.println("----Tabla de simbolos para el proc "+this.procedimiento.getNombre()+"-----");
+            nuevaTabla.imprimir();
             System.out.println("----Fin de simbolos para el proc-----");
             System.out.println("Ejecutando "+this.procedimiento.getNombre());
             this.procedimiento.ejecutar(contexto, nuevaTabla);

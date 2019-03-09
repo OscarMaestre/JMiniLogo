@@ -1,5 +1,6 @@
 package io.github.oscarmaestre.jminilogo.programa;
 
+import io.github.oscarmaestre.jminilogo.excepciones.VariableNoExisteException;
 import java.util.HashMap;
 
 public class SentenciaAsignacion extends Sentencia{
@@ -13,15 +14,10 @@ public class SentenciaAsignacion extends Sentencia{
     
     
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) throws Exception{
-        Integer valor;
-        if (this.valorDerecho.isEsSimbolico()){
-            String nombreVariable=this.valorDerecho.getNombre();
-            valor=tablaSimbolos.get(nombreVariable);
-        } else{
-            valor=this.valorDerecho.getValor();
-        }
-        tablaSimbolos.put(variable, valor);
+    public boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws VariableNoExisteException{
+        Integer valor=tablaSimbolos.getValor(valorDerecho);
+        tablaSimbolos.almacenar(variable, valor);
+        //System.out.println(variable + " toma el valor "+valor);
         return true;
     }
     

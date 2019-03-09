@@ -13,7 +13,7 @@ public class SentenciaRepetir extends Sentencia{
     }
     
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) throws Exception {
+    public boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception {
         for (int i=0; i<this.veces; i++){
             this.cuerpoRepetir.ejecutar(contexto, tablaSimbolos);
         }

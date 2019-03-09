@@ -11,13 +11,8 @@ public class SentenciaAvanzaConVariable extends Sentencia{
     }
     
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) throws VariableNoExisteException {
-        Integer pasos=tablaSimbolos.get(this.nombreVariable);
-        System.out.println("Acceso a variable: "+this.nombreVariable+" valor "+pasos);
-        if (pasos==null){
-            VariableNoExisteException e= new VariableNoExisteException(this.nombreVariable);
-            throw e;
-        }
+    public boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws VariableNoExisteException {
+        Integer pasos=tablaSimbolos.getValor(this.nombreVariable);
         contexto.avanza(pasos);
         return true;
     }

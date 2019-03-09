@@ -16,27 +16,11 @@ parser code {:
     public abstract void crearNuevaListaParametros();
     
     public abstract void anadirParametro(String parametro);
-    
-    public abstract void anotarVariableResultado(String variable);
-    
-    public abstract void anotarParam1(Parametro p );
-    
-    public abstract void anotarParam2(Parametro p );
-    
-    public abstract String sumar(Object o1, Object o2);
 
     public abstract void crearNuevaListaParametrosPasados();
     
     public abstract void anadirParametroPasado(Parametro parametro);
-    
-    public abstract Integer getValor(String simbolo) throws BadStringOperationException;
-    
-    public abstract void setValor(String simbolo, Integer valor);
-    
-    public abstract void setValor(String simbolo, String valor);
-    
-    public abstract void setValor(String simbolo, Object valor);
-    
+   
     public abstract void anadirSentenciaSubeLapiz();
     
     public abstract void anadirSentenciaBajaLapiz();
@@ -63,13 +47,17 @@ parser code {:
 
     public abstract ArrayList<String> getListaParametros() ;
    
-    public abstract SentenciaCompuesta getPrograma();
+    public abstract SentenciaCompuesta getPrograma();    
 
-    public abstract void anadirSentenciaAsignacionSimple(String variable, String entero);
+    public abstract void anotarVariableResultado(String variable);
+    
+    public abstract void anotarParam1(Parametro p );
+    
+    public abstract void anotarParam2(Parametro p );
+    
+    public abstract void anotarSigno(String signo);
 
-    public abstract void anadirSentenciaAsignacionConVariable(String variableIzq, String variableDer);
-
-
+    public abstract void cerrarAsignacion() throws Exception;
     
 :}
 
@@ -81,26 +69,26 @@ scan with {: return s.next_token(); :};
 terminal            ROJO, NEGRO, AZUL, VERDE, CYAN, MAGENTA, AMARILLO, BLANCO;
 terminal            String IDENTIFICADOR;
 terminal            PARENIZQ, PARENDER;
-terminal            SUMA, RESTA, MULTIPLICACION, DIVISION, IGUAL;
+terminal            SUMA;
+terminal            RESTA;
+terminal            MULTIPLICACION;
+terminal            DIVISION;
+terminal            IGUAL;
 terminal            PROCEDIMIENTO, COMA, EJECUTAR;
 terminal            SUBELAPIZ, BAJALAPIZ, AVANZA, GIRA, PUNTOCOMA, ESPACIO, REPETIR, LLAVEABIERTA, LLAVECERRADA;
 terminal            String ENTERO; 
 
-
 non terminal            lista_sentencias;
 non terminal            subir, bajar, avanzar, girar, repetir, color, procedimiento;
 non terminal            sentencia, final_sentencia, lista_parametros;
-non terminal            asignacion, expresion_matematica_simple, operando;
+non terminal            asignacion, expresion, signo, operando1, operando2;
 non terminal            valores_pasados_a_procedimiento, parametro, ejecutar_proc, lista_valores_pasados ;
-
 
 lista_sentencias ::= sentencia final_sentencia | sentencia final_sentencia lista_sentencias ;
 
 final_sentencia  ::= PUNTOCOMA | ESPACIO PUNTOCOMA | ESPACIO PUNTOCOMA ESPACIO ;
 
 sentencia ::= subir  | bajar | avanzar | girar | repetir | color | procedimiento | asignacion | ejecutar_proc;
-
-
 
 
 color ::= ROJO {:  this.parser.anadirSentenciaColor(
@@ -129,14 +117,48 @@ color ::= ROJO {:  this.parser.anadirSentenciaColor(
                 ); :} ;
 
 
-asignacion ::= IDENTIFICADOR:id IGUAL ENTERO:entero 
+asignacion ::= IDENTIFICADOR:id {: this.parser.anotarVariableResultado(id); :}
+                IGUAL expresion:e
                 {:
-                    this.parser.anadirSentenciaAsignacionSimple(id, entero);
+                    this.parser.cerrarAsignacion();
+                :} ;
+expresion ::= operando1:op | operando1:op signo:s  operando2:op2;
+                
+
+operando1 ::= IDENTIFICADOR:id {: 
+                    boolean esSimbolico=true;
+                    Parametro p=new Parametro(esSimbolico);
+                    p.setNombre(id);
+                    this.parser.anotarParam1(p);
+                :}
+                | ENTERO:entero {:
+                    boolean esSimbolico=false;
+                    Parametro p=new Parametro(esSimbolico);
+                    p.setValor(entero);
+                    this.parser.anotarParam1(p);
                 :};
 
-expresion_matematica_simple ::= operando:op {: RESULT=op; :} ;
+operando2 ::= IDENTIFICADOR:id {: 
+                    boolean esSimbolico=true;
+                    Parametro p=new Parametro(esSimbolico);
+                    p.setNombre(id);
+                    this.parser.anotarParam2(p);
+                :}
+                | ENTERO:entero {:
+                    boolean esSimbolico=false;
+                    Parametro p=new Parametro(esSimbolico);
+                    p.setValor(entero);
+                    this.parser.anotarParam2(p);
+                :};
 
-operando    ::= ENTERO:entero {:RESULT = entero; :} | IDENTIFICADOR:id {: RESULT=id; :};
+
+signo ::=   SUMA            {: this.parser.anotarSigno("+"); :}| 
+            RESTA           {: this.parser.anotarSigno("-"); :}| 
+            MULTIPLICACION  {: this.parser.anotarSigno("*"); :}| 
+            DIVISION        {: this.parser.anotarSigno("/"); :}
+            ;
+
+
 
 subir ::=   SUBELAPIZ {: 
                 System.out.println("Subiendo");

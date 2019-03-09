@@ -10,7 +10,7 @@ public class SentenciaSubeLapiz extends Sentencia{
     }
 
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) {
+    public boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) {
         contexto.subeLapiz();
         return true;
     }

@@ -3,14 +3,12 @@ package io.github.oscarmaestre.jminilogo.programa;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Set;
-import javax.management.BadStringOperationException;
+
+
 
 public class SentenciaCompuesta extends Sentencia{
     ArrayList<Sentencia> programa=new ArrayList<Sentencia>();
-    HashMap<String, Integer> tablaSimbolos=new HashMap<>();
+    TablaSimbolos tablaSimbolos=new TablaSimbolos();
     protected boolean debug;
 
     /**
@@ -31,17 +29,6 @@ public class SentenciaCompuesta extends Sentencia{
         this.debug = debug;
     }
 
-    public HashMap<String, Integer> getTablaSimbolos() {
-        return tablaSimbolos;
-    }
-    
-    public void imprimirTablaSimbolos(){
-        Set<String> claves = tablaSimbolos.keySet();
-        for (String clave : claves){
-            Integer valor=tablaSimbolos.get(clave);
-            System.out.println("\t"+clave+":"+valor);
-        }
-    }
 
     private transient final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
@@ -80,7 +67,7 @@ public class SentenciaCompuesta extends Sentencia{
         return this.ejecutar(contexto, this.tablaSimbolos);
     }
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) throws Exception{
+    public boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception{
         
         if (this.isDebug()){
             System.out.println("Ejecutando programa...");
@@ -94,16 +81,7 @@ public class SentenciaCompuesta extends Sentencia{
         return true;
     }  
     
-    public void asignarValor (String simbolo, Integer valor){
-        this.tablaSimbolos.put(simbolo, valor);
-    }
-    public Integer getValor (String simbolo) throws BadStringOperationException{
-        Integer valor=this.tablaSimbolos.get(simbolo);
-        if (valor==null){
-            throw new BadStringOperationException("No existe la variable "+simbolo);
-        }
-        return valor;
-    }
+    
     @Override
     public String toString() {
         String resultado="";

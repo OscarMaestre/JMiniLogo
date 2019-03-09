@@ -16,15 +16,9 @@ public abstract class Sentencia {
         this.pasoAPaso = pasoAPaso;
     }
     
-    public void imprimirTablaSimbolos(HashMap<String, Integer> tablaSimbolos){
-        Set<String> claves = tablaSimbolos.keySet();
-        for (String clave : claves){
-            Integer valor=tablaSimbolos.get(clave);
-            System.out.println("\t"+clave+":"+valor);
-        }
-    }
     
-    public abstract boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos)
+    
+    public abstract boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos)
             throws Exception;
     @Override
     public abstract String toString();

@@ -31,7 +31,7 @@ public class SentenciaProcedimiento extends SentenciaCompuesta{
  
     
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) throws Exception {
+    public boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws Exception {
         System.out.println("Iniciando ejecucion proc "+this.nombre);
         for (Sentencia s:programa){
             s.ejecutar(contexto, tablaSimbolos);

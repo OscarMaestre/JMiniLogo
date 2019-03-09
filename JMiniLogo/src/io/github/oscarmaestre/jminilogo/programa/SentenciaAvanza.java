@@ -1,7 +1,5 @@
 package io.github.oscarmaestre.jminilogo.programa;
 
-import java.util.HashMap;
-
 public class SentenciaAvanza extends Sentencia{
     int pasos;
 
@@ -9,7 +7,7 @@ public class SentenciaAvanza extends Sentencia{
         this.pasos = pasos;
     }
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) {
+    public boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) {
         int numPasos;
         contexto.avanza(this.pasos);
         return true;

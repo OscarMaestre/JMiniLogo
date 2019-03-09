@@ -9,7 +9,7 @@ public class SentenciaGira extends Sentencia{
         this.grados = grados;
     }
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto, HashMap<String, Integer> tablaSimbolos) {
+    public boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) {
         contexto.gira(grados);
         return true;
     }

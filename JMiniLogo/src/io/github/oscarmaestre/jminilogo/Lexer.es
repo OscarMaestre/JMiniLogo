@@ -49,7 +49,7 @@ PuntoComa       = ";"
 
 SubeLapiz       = "subelapiz"
 BajaLapiz       = "bajalapiz"  
-Entero          =  "-"?( 0 | [1-9][0-9]*)
+Entero          =  ( 0 | [1-9][0-9]*)
 
 Suma            = "+"
 Resta           = "-"
@@ -66,6 +66,11 @@ Procedimiento   = "procedimiento"{EspacioEnBlanco}
 %%
 
 
+{Suma}                      { return symbol (sym.SUMA); }
+{Resta}                     { return symbol (sym.RESTA); }
+{Multiplicacion}            { return symbol (sym.MULTIPLICACION); }
+{Division}                  { return symbol (sym.DIVISION); }
+{SignoIgual}                { return symbol (sym.IGUAL); }
 
 
 {Rojo}                          {
@@ -194,11 +199,6 @@ Procedimiento   = "procedimiento"{EspacioEnBlanco}
                                     return symbol (sym.IDENTIFICADOR, new String(yytext())); 
                                 }
 
-{Suma}                      { return symbol (sym.SUMA); }
-{Resta}                     { return symbol (sym.RESTA); }
-{Multiplicacion}            { return symbol (sym.MULTIPLICACION); }
-{Division}                  { return symbol (sym.DIVISION); }
-{SignoIgual}                { return symbol (sym.IGUAL); }
 /* error fallback */
 [^]                              { throw new Error("Simbolo no esperado <"+
                                                         yytext()+">"); }

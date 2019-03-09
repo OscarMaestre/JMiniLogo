@@ -3,6 +3,7 @@ package io.github.oscarmaestre.jminilogo;
 import io.github.oscarmaestre.jminilogo.programa.Parametro;
 import io.github.oscarmaestre.jminilogo.programa.Sentencia;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaAsignacion;
+import io.github.oscarmaestre.jminilogo.programa.SentenciaAsignacionConMatematica;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaAvanza;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaAvanzaConVariable;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaBajaLapiz;
@@ -29,9 +30,11 @@ public class AntoParser extends Parser  {
     HashMap<String, SentenciaProcedimiento> procedimientos;
     ArrayList<String> listaParametros;
     ArrayList<Parametro> parametrosPasados;
-    private String nombreVariableResultado;
+    
+    private String    signo;
     private Parametro parametro1;
     private Parametro parametro2;
+    private String  variableDestino;
 
     public AntoParser(Scanner scanner, SymbolFactory sf) {
         super(scanner, sf);
@@ -44,66 +47,58 @@ public class AntoParser extends Parser  {
         programa=new SentenciaCompuesta();
         procedimientos=new HashMap<>();
     }
+
+    /**
+     *
+     * @param nombre
+     * @return
+     */
     public SentenciaProcedimiento getProcedimiento(String nombre){
         return procedimientos.get(nombre);
     }
+    @Override
     public void crearNuevaListaParametros(){
         this.listaParametros=new ArrayList<>();
     }
+    @Override
     public void anadirParametro(String parametro){
         this.listaParametros.add(parametro);
     }
-    public void anotarVariableResultado(String variable){
-        this.nombreVariableResultado=variable;
-    }
+    
+    @Override
     public void anotarParam1(Parametro p ){
         this.parametro1=p;
+        System.out.println("Anotado parametro 1");
     }
+    @Override
     public void anotarParam2(Parametro p ){
         this.parametro2=p;
+        System.out.println("Anotado parametro 2");
     }
     
-    public String sumar(Object o1, Object o2){
-        String n1=(String) o1;
-        String n2=(String) o2;
-        int num1 = Integer.parseInt(n1);
-        int num2 = Integer.parseInt(n2);
-        Integer resultado = num1 + num2;
-        return resultado.toString();
-    }
 
+
+    @Override
     public void crearNuevaListaParametrosPasados(){
         this.parametrosPasados=new ArrayList<>();
     }
+    @Override
     public void anadirParametroPasado(Parametro parametro){
         this.parametrosPasados.add(parametro);
     }
     
-    public Integer getValor(String simbolo) throws BadStringOperationException{
-        return programa.getValor(simbolo);
-    }
-    public void setValor(String simbolo, Integer valor){
-        this.programa.asignarValor(simbolo, valor);
-    }
-    public void setValor(String simbolo, String valor){
-        Integer iValor=Integer.parseInt(valor);
-        this.programa.asignarValor(simbolo, iValor);
-    }
-    public void setValor(String simbolo, Object valor){
-        String strValor=valor.toString();
-        Integer iValor=Integer.parseInt(strValor);
-        this.programa.asignarValor(simbolo, iValor);
-    }
-
     
+    @Override
     public void anadirSentenciaSubeLapiz(){
         Sentencia sentencia=new SentenciaSubeLapiz();
         programa.anadirSentencia ( sentencia );
     }
+    @Override
     public void anadirSentenciaBajaLapiz(){
         Sentencia sentencia=new SentenciaBajaLapiz();
         programa.anadirSentencia ( sentencia );
     }
+    @Override
     public void anadirSentenciaAvanza(String puntos){
         System.out.println("Anadiendo avance:"+puntos.toString());
         Sentencia sentencia=new SentenciaAvanza(new Integer(puntos));
@@ -120,11 +115,13 @@ public class AntoParser extends Parser  {
         programa.anadirSentencia(sentencia);   
     }
     
+    @Override
     public void anadirSentenciaGira(String puntos){
         System.out.println("Anadiendo giro:"+puntos.toString());
         Sentencia sentencia=new SentenciaGira(new Integer(puntos));
         programa.anadirSentencia ( sentencia );
     }
+    @Override
     public void anadirSentenciaRepetir(String veces){
         SentenciaRepetir sentenciaRepetir=new SentenciaRepetir(Integer.parseInt(veces));
         programa.anadirSentencia(sentenciaRepetir);
@@ -132,12 +129,14 @@ public class AntoParser extends Parser  {
         programa=new SentenciaCompuesta();
     }
     
+    @Override
     public void anadirSentenciaProcedimiento(SentenciaProcedimiento sentenciaProcedimiento){
         this.procedimientos.put(sentenciaProcedimiento.getNombre(), sentenciaProcedimiento);
         
         pila.push ( programa );
         programa=sentenciaProcedimiento;
     }
+    @Override
     public void terminarSentenciaProcedimiento(){
         SentenciaCompuesta programaAnterior=pila.pop();
         /*SentenciaProcedimiento sentenciaProcedimiento=(SentenciaProcedimiento)
@@ -147,15 +146,18 @@ public class AntoParser extends Parser  {
         this.programa = programaAnterior;
     }
 
+    @Override
     public void anadirSentenciaEjecutar(SentenciaEjecutar s){
         s.setParametros (this.parametrosPasados);
         programa.anadirSentencia(s);
     }
 
+    @Override
     public void anadirSentenciaColor(Color color){
         SentenciaColor sentenciaColor = new SentenciaColor(color);
         programa.anadirSentencia(sentenciaColor);
     }
+    @Override
     public void terminarSentenciaRepetir(){
         SentenciaCompuesta cuerpoRepetir = programa;
         SentenciaCompuesta programaAnterior=pila.pop();
@@ -165,32 +167,52 @@ public class AntoParser extends Parser  {
         this.programa = programaAnterior;
     }
 
+    @Override
     public ArrayList<String> getListaParametros() {
         return listaParametros;
     }
    
+    @Override
     public SentenciaCompuesta getPrograma(){
         return programa;
     }
 
     @Override
-    public void anadirSentenciaAsignacionSimple(String variable, String entero) {
-        boolean esSimbolico=false;
-        Parametro p=new Parametro(esSimbolico);
-        p.setValor(entero);
-        SentenciaAsignacion asignacion=new SentenciaAsignacion(variable, p);
-        this.programa.anadirSentencia(asignacion);
+    public void anotarSigno(String signo) {
+        this.signo=signo;
+        System.out.println("anotado signo "+signo);
     }
 
     @Override
-    public void anadirSentenciaAsignacionConVariable(String variableIzq, String variableDer) {
-        boolean esSimbolico=true;
-        Parametro p=new Parametro(esSimbolico);
-        p.setNombre(variableDer);
-        SentenciaAsignacion asignacion=new SentenciaAsignacion(variableIzq, p);
-        this.programa.anadirSentencia(asignacion);
+    public void anotarVariableResultado(String variable) {
+        this.variableDestino=variable;
+        this.parametro1=null;
+        this.parametro2=null;
+        this.signo=null;
     }
 
+    @Override
+    public void cerrarAsignacion() throws Exception {
+        System.out.println("Cerrando..");
+        System.out.println(this.variableDestino);
+        System.out.println(this.parametro1);
+        System.out.println(this.signo);
+        System.out.println(this.parametro2);
+        
+        if ((this.signo==null) && (this.parametro2==null)){
+            SentenciaAsignacion s=new SentenciaAsignacion(this.variableDestino, this.parametro1);
+            this.programa.anadirSentencia(s);
+            return ;
+        }
+        if ((this.signo!=null) && (this.parametro2!=null)){
+            SentenciaAsignacionConMatematica s;
+            s=new SentenciaAsignacionConMatematica(
+                    this.variableDestino, this.parametro1, this.signo, this.parametro2);
+            this.programa.anadirSentencia(s);
+            return ;
+        }
+        throw new Exception();
+    }
 
-    
 }
+   
