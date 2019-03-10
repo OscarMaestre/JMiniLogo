@@ -1,5 +1,7 @@
 JFLEX=/home/usuario/jflex-1.7.0/bin/jflex
 
+JAR=JMiniLogo-1.0.jar
+
 all: lexer grammar
 
 lexer:
@@ -11,11 +13,10 @@ grammar:
 	sed -i -e 's/public class Parser extends java_cup.runtime.lr_parser/public abstract class Parser extends java_cup.runtime.lr_parser/' Parser.java
 	mv *.java JMiniLogo/src/io/github/oscarmaestre/jminilogo
 
-antlr:
-	java -cp antlr-4.7.2-complete.jar org.antlr.v4.Tool JMiniLogo/src/io/github/oscarmaestre/jminilogo/Grammar_antlr.es  ;
+jar: lexer grammar
+	jar -cvfe $(JAR) io.github.oscarmaestre.jminilogo.Main -C JMiniLogo/build/classes . -C JMiniLogo/lib/ .
 
-test: antlr
-	java -cp antlr-4.7.2-complete.jar org.antlr.v4.gui.TestRig 
+
 
 clean:
 	rm JMiniLogo/src/io/github/oscarmaestre/jminilogo/Grammar_antlr*.java ;rm JMiniLogo/src/io/github/oscarmaestre/jminilogo/*.interp; rm JMiniLogo/src/io/github/oscarmaestre/jminilogo/*.tokens;
