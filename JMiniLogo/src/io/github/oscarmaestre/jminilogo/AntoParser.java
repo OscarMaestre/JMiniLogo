@@ -5,13 +5,13 @@ import io.github.oscarmaestre.jminilogo.programa.Sentencia;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaAsignacion;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaAsignacionConMatematica;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaAvanza;
-import io.github.oscarmaestre.jminilogo.programa.SentenciaAvanzaConVariable;
+
 import io.github.oscarmaestre.jminilogo.programa.SentenciaBajaLapiz;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaColor;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaCompuesta;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaEjecutar;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaGira;
-import io.github.oscarmaestre.jminilogo.programa.SentenciaGiraConVariable;
+
 import io.github.oscarmaestre.jminilogo.programa.SentenciaProcedimiento;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaRepetir;
 import io.github.oscarmaestre.jminilogo.programa.SentenciaSubeLapiz;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Stack;
 import java_cup.runtime.Scanner;
 import java_cup.runtime.SymbolFactory;
-import javax.management.BadStringOperationException;
+
 
 public class AntoParser extends Parser  {
     Lexer s;
@@ -98,27 +98,11 @@ public class AntoParser extends Parser  {
         Sentencia sentencia=new SentenciaBajaLapiz();
         programa.anadirSentencia ( sentencia );
     }
-    @Override
-    public void anadirSentenciaAvanza(String puntos){
-        //System.out.println("Anadiendo avance:"+puntos.toString());
-        Sentencia sentencia=new SentenciaAvanza(new Integer(puntos));
-        programa.anadirSentencia ( sentencia );
-    }
-    public void anadirSentenciaAvanzaConVariable(String nombreVariable){
-        SentenciaAvanzaConVariable sentencia=
-                new SentenciaAvanzaConVariable(nombreVariable);
-        programa.anadirSentencia(sentencia);   
-    }
-    public void anadirSentenciaGiraConVariable(String nombreVariable){
-        SentenciaGiraConVariable sentencia=
-                new SentenciaGiraConVariable(nombreVariable);
-        programa.anadirSentencia(sentencia);   
-    }
     
     @Override
-    public void anadirSentenciaGira(String puntos){
-        //System.out.println("Anadiendo giro:"+puntos.toString());
-        Sentencia sentencia=new SentenciaGira(new Integer(puntos));
+    public void anadirSentenciaAvanza(Parametro puntos){
+        //System.out.println("Anadiendo avance:"+puntos.toString());
+        Sentencia sentencia=new SentenciaAvanza(puntos);
         programa.anadirSentencia ( sentencia );
     }
     
@@ -214,6 +198,12 @@ public class AntoParser extends Parser  {
             return ;
         }
         throw new Exception();
+    }
+
+    @Override
+    public void anadirSentenciaGira(Parametro puntos) {
+        SentenciaGira s=new SentenciaGira(puntos);
+        this.programa.anadirSentencia(s);
     }
 
 }

@@ -1,15 +1,18 @@
 package io.github.oscarmaestre.jminilogo.programa;
 
-public class SentenciaAvanza extends Sentencia{
-    int pasos;
+import io.github.oscarmaestre.jminilogo.excepciones.VariableNoExisteException;
 
-    public SentenciaAvanza(int pasos) {
+public class SentenciaAvanza extends Sentencia{
+    Parametro pasos;
+
+    public SentenciaAvanza(Parametro pasos) {
         this.pasos = pasos;
     }
+    
     @Override
-    public boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) {
-        int numPasos;
-        contexto.avanza(this.pasos);
+    public boolean ejecutar(IContextoEjecucion contexto, TablaSimbolos tablaSimbolos) throws VariableNoExisteException {
+        int numPasos=tablaSimbolos.getValor(pasos);
+        contexto.avanza(numPasos);
         return true;
     }
 

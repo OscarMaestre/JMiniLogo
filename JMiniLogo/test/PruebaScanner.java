@@ -93,8 +93,20 @@ public class PruebaScanner {
     }
     
     @Test
+    public void avanzaNegativo() {
+        String programa="avanza -20;";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    @Test
     public void gira() {
         String programa="gira     20;";
+        this.pruebaEstandar(programa, programa);
+    }
+    
+    @Test
+    public void giraNegativo() {
+        String programa="gira     -20;";
         this.pruebaEstandar(programa, programa);
     }
     

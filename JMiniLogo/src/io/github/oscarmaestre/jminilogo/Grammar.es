@@ -25,13 +25,9 @@ parser code {:
     
     public abstract void anadirSentenciaBajaLapiz();
     
-    public abstract void anadirSentenciaAvanza(String puntos);
+    public abstract void anadirSentenciaAvanza(Parametro puntos);
     
-    public abstract void anadirSentenciaAvanzaConVariable(String nombreVariable);
-    
-    public abstract void anadirSentenciaGiraConVariable(String nombreVariable);
-    
-    public abstract void anadirSentenciaGira(String puntos);
+    public abstract void anadirSentenciaGira(Parametro puntos);
     
     public abstract void anadirSentenciaRepetir(Parametro veces);
     
@@ -187,19 +183,15 @@ bajar ::=   BAJALAPIZ {:
             :}  ;
 
 
-avanzar::=  AVANZA ESPACIO ENTERO:entero {: 
+avanzar::=  AVANZA ESPACIO operando:entero {: 
                 this.parser.anadirSentenciaAvanza(entero);
-            :} | AVANZA ESPACIO IDENTIFICADOR:id{: 
-                this.parser.anadirSentenciaAvanzaConVariable(id);
             :} ;
 
 
 
-girar ::=   GIRA  ESPACIO ENTERO:entero {: 
+girar ::=   GIRA  ESPACIO operando:entero {: 
                 this.parser.anadirSentenciaGira(entero);
-            :} | GIRA ESPACIO IDENTIFICADOR:id {:
-                this.parser.anadirSentenciaGiraConVariable(id);
-            :};
+            :} ;
 
 
 repetir::= REPETIR ESPACIO operando:veces {:
